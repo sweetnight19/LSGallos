@@ -6,7 +6,7 @@ public class Competicion {
     private String name;
     private Date startDate;
     private Date endDate;
-    //private phases phases;
+    // private phases phases;
 
     public Competicion(String name, Date startDate, Date endDate) {
         this.name = name;
