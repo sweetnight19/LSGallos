@@ -1,88 +1,47 @@
 package JsonHelper;
 
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.stream.JsonReader;
-
 import Competicion.Competicion;
 import Countries.Countries;
 import Rapper.Rapper;
+import com.google.gson.*;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
 
 public class JsonHelper {
 
-    /*
-     * public static solver[] importJson(String filename) throws IOException {
-     * 
-     * ArrayList<Solver> arrayList = new ArrayList<>();
-     * 
-     * Gson gson = new Gson(); JsonReader reader = new JsonReader(new
-     * FileReader(filename)); JsonArray solvers =
-     * JsonParser.parseReader(reader).getAsJsonArray();
-     * 
-     * reader.close();
-     * 
-     * Solver[] solver2 = gson.fromJson(solvers.getAsJsonArray(), Solver[].class);
-     * 
-     * arrayList.addAll(Arrays.asList(solver2)); return arrayList.toArray(new
-     * Solver[0]);
-     * 
-     * }
-     */
+    public static void importRappers(Path path, ArrayList<Rapper> rappers) throws IOException {
+        Gson gson=new Gson();
+        String json = Files.readString(path);
+        JsonElement element = JsonParser.parseString(json);
+        JsonObject object = element.getAsJsonObject();
 
-    public static Rapper[] importRappers(String filename) throws IOException {
-        ArrayList<Rapper> arrayList = new ArrayList<>();
+        for (int i = 0; i < object.getAsJsonArray("rappers").size(); i++) {
+            rappers.add(gson.fromJson(object.getAsJsonArray("rappers").get(i).getAsJsonObject(), Rapper.class));
+        }
+    }
 
+    public static void importCountries(Path path, ArrayList<String> countries) throws IOException {
+        String json = Files.readString(path);
+        JsonElement element = JsonParser.parseString(json);
+        JsonObject object = element.getAsJsonObject();
+
+        for (int i = 0; i < object.getAsJsonArray("countries").size(); i++) {
+            countries.add(object.getAsJsonArray("countries").get(i).getAsString());
+        }
+
+    }
+
+    public static Competicion importCompetition(Path path) throws IOException {
         Gson gson = new Gson();
-        JsonReader reader = new JsonReader(new FileReader(filename));
+        String json = Files.readString(path);
+        JsonElement element = JsonParser.parseString(json);
+        JsonObject object = element.getAsJsonObject();
 
-        JsonArray rapperArray = JsonParser.parseReader(reader).getAsJsonArray();
-        reader.close();
+        JsonObject jsonObject = object.getAsJsonObject("competition").getAsJsonObject();
 
-        Rapper[] rappers = gson.fromJson(rapperArray.getAsJsonArray(), Rapper[].class);
-
-        arrayList.addAll(Arrays.asList(rappers));
-        return arrayList.toArray(new Rapper[0]);
-
+        return gson.fromJson(jsonObject, Competicion.class);
     }
-
-    public static Countries[] importCountries(String filename) throws IOException {
-        ArrayList<Countries> arrayList = new ArrayList<>();
-
-        JsonObject gsonObj = gsonObj.getAsJsonObject();
-
-        JsonReader reader = new JsonReader(new FileReader(filename));
-
-        JsonArray rapperArray = JsonParser.parseReader(reader).getAsJsonArray();
-        reader.close();
-
-        Countries[] countries = gsonObj.fromJson(rapperArray.getAsJsonArray(), Countries[].class);
-
-        arrayList.addAll(Arrays.asList(countries));
-        return arrayList.toArray(new Countries[0]);
-
-    }
-
-    public static Competicion[] importcCompeticions(String filename) throws IOException {
-        ArrayList<Competicion> arrayList = new ArrayList<>();
-
-        Gson gson = new Gson();
-        JsonReader reader = new JsonReader(new FileReader(filename));
-
-        JsonArray competicioArray = JsonParser.parseReader(reader).getAsJsonArray();
-        reader.close();
-
-        Competicion[] competicions = gson.fromJson(competicioArray.getAsJsonArray(), Competicion[].class);
-
-        arrayList.addAll(Arrays.asList(competicions));
-        return arrayList.toArray(new Competicion[0]);
-
-    }
-
 }

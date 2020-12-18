@@ -1,16 +1,11 @@
 package Competicion;
 
 import java.sql.Date;
+import java.util.ArrayList;
 
 public class Competicion {
     private String name;
-    private Date startDate;
-    private Date endDate;
-    // private phases phases;
-
-    public Competicion(String name, Date startDate, Date endDate) {
-        this.name = name;
-        this.startDate = startDate;
-        this.endDate = endDate;
-    }
+    private String startDate;
+    private String endDate;
+    private ArrayList<phases> phases;
 }

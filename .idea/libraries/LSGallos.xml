@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="LSGallos">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/LSGallos.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

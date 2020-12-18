@@ -1,20 +1,21 @@
+import Competicion.Competicion;
+import JsonHelper.JsonHelper;
 import Rapper.Rapper;
 
-import com.google.gson.JsonIOException;
-
-import Competicion.Competicion;
-import Countries.Countries;
-import JsonHelper.JsonHelper;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        Rapper[] rapper;
-        Countries[] countries;
-        Competicion[] competicion;
+        ArrayList<Rapper> rapper = new ArrayList();
+        ArrayList<String> countries = new ArrayList<>();
+        Competicion competicion;
+        Path p = Paths.get("JSON/competicio.json");
 
-        //rapper = JsonHelper.importRappers("/JSON/competició.json");
-        countries = JsonHelper.importCountries("/JSON/competició.json");
-        //competicion = JsonHelper.importcCompeticions("/JSON/competició.json");
+        JsonHelper.importRappers(p, rapper);
+        JsonHelper.importCountries(p, countries);
+        competicion = JsonHelper.importCompetition(p);
         System.out.println("Hello, World!");
 
     }
