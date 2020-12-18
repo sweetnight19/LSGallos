@@ -19,4 +19,5 @@ public class Rapper {
         this.photo = photo;
     }
 
+
 }

@@ -1,4 +1,5 @@
 import Competicion.Competicion;
+import Controller.MenuController;
 import JsonHelper.JsonHelper;
 import Rapper.Rapper;
 
@@ -11,12 +12,13 @@ public class App {
         ArrayList<Rapper> rapper = new ArrayList();
         ArrayList<String> countries = new ArrayList<>();
         Competicion competicion;
+        MenuController menuController = new MenuController();
         Path p = Paths.get("JSON/competicio.json");
 
         JsonHelper.importRappers(p, rapper);
         JsonHelper.importCountries(p, countries);
         competicion = JsonHelper.importCompetition(p);
-        System.out.println("Hello, World!");
+        menuController.executaMenu(competicion, countries, rapper);
 
     }
 
