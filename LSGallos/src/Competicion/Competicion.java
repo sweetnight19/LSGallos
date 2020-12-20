@@ -1,6 +1,5 @@
 package Competicion;
 
-import java.sql.Date;
 import java.util.ArrayList;
 
 public class Competicion {
