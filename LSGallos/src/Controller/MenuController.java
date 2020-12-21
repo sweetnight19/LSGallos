@@ -52,6 +52,7 @@ public class MenuController {
             System.out.print("Choose an option: ");
             opcio = scanner.nextInt();
             if (opcio == 1) {
+                scanner.nextLine();
                 Login(rapper, countries);
             }
             if (opcio != 1 && opcio != 2) {
@@ -89,7 +90,7 @@ public class MenuController {
                     }
                 }
                 if (flagStageName == 1) {
-                    Dashboard(competicion);
+                    Dashboard(competicion, name, rapper);
                     System.out.println();
                 } else {
                     System.out.println("Bro, there's no " + name + " on ma' list.");
@@ -145,6 +146,7 @@ public class MenuController {
         int flagStageName = 0;
         int flagCountries = 0;
         Rapper rapper2;
+
         for (int i = 0; i < rapper.size(); i++) {
             if (rapper.get(i).getStageName().equals(stageName)) {
                 flagStageName = 1;
@@ -176,13 +178,20 @@ public class MenuController {
         }
     }
 
-    private void Dashboard(Competicion competicion) {
+    private void Dashboard(Competicion competicion, String name, ArrayList<Rapper> rapper) {
         int opcio2;
+        int score;
 
+        score = 0;
+        for (int i = 0; i < rapper.size(); i++) {
+            if (name.equals(rapper.get(i).getStageName())) {
+                score = rapper.get(i).getScore();
+            }
+        }
         System.out.println();
         System.out.println("---------------------------------------------------------------------------------");
-        System.out.println("| " + competicion.getName() + " | Phase 1/" + competicion.getPhasesCount()
-                + " | Score: 0 | Next battle: escrita vs Trueno |");
+        System.out.println("| " + competicion.getName() + " | Phase 1/" + competicion.getPhasesCount() + " | Score: "
+                + score + " | Next battle: escrita vs Trueno |");
         System.out.println("---------------------------------------------------------------------------------");
         System.out.println();
         System.out.println("1. Start the battle");
@@ -193,5 +202,17 @@ public class MenuController {
         System.out.print("Choose an option: ");
         opcio2 = scanner.nextInt();
         scanner.nextLine();
+        switch (opcio2) {
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            default:
+                break;
+        }
     }
 }
