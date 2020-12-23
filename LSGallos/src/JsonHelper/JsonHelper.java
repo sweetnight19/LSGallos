@@ -5,6 +5,7 @@ import Countries.Countries;
 import Rapper.Rapper;
 import com.google.gson.*;
 
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -49,6 +50,8 @@ public class JsonHelper {
 
     public static void añadirRapero(Rapper rapper) throws IOException {
         /*
+         * Versio del Pol
+         * 
          * element.getAsJsonArray().get(0).getAsJsonObject().add("name", new
          * JsonPrimitive("Test"));
          * 
@@ -58,6 +61,31 @@ public class JsonHelper {
          * 
          * rappers.add(gson.fromJson(object.getAsJsonArray("rappers").get(i).
          * getAsJsonObject(), Rapper.class));
+         */
+
+        /*
+         * Versio de la Raquel
+         * 
+         * JsonParser parser = new JsonParser(); try (FileReader reader = new
+         * FileReader("JSON/competicio.json")){ JsonObject rapper = new JsonObject();
+         * rapper.put("realName", rapper.getNomComplet()); rapper.put("stageName",
+         * rapper.getNomArtistic()); rapper.put("birth", rapper.getDataNaixement());
+         * rapper.put("nationality", rapper.getPaisString()); rapper.put("level",
+         * rapper.getNivell()); rapper.put("photo", rapper.getFoto()); JsonObject
+         * competitionFile = (JsonObject) parser.parse(reader); JsonArray arrayRappers =
+         * (JsonArray) competitionFile.get("rappers"); arrayRappers.add(rapper);
+         * competitionFile.replace("rappers", arrayRappers);
+         * 
+         * try (FileWriter writer = new FileWriter("JSON/competicio.json")){
+         * //ObjectMapper mapper = new ObjectMapper(); //Object json =
+         * mapper.readValue(competitionFile.toJSONString(), Object.class); //String
+         * jsonStr = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(json);
+         * writer.write(competitionFile.toString()); writer.flush();
+         * 
+         * }catch (IOException e){
+         * System.out.println("IO Exeption a al registrar rapero al fitcher: " +
+         * e.getMessage()); } } catch (IOException | ParseException e){
+         * System.out.println(e.getMessage()); }
          */
     }
 }
