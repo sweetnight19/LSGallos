@@ -83,35 +83,43 @@ public class MenuController {
             System.out.println("2. Leave");
             System.out.println();
             System.out.print("Choose an option: ");
-            opcio = scanner.nextInt();
-            scanner.nextLine();
-            if (opcio == 1) {
-                System.out.println();
-                System.out.print("Enter your artistic name: ");
-                name = scanner.nextLine();
-                flagStageName = 0;
-                for (int i = 0; i < rapper.size(); i++) {
-                    if (name.equals(rapper.get(i).getStageName())) {
-                        flagStageName = 1;
-                    }
-                }
-                if (flagStageName == 1) {
-                    Dashboard(competicion, name, rapper);
-                    System.out.println();
-                } else {
-                    System.out.println("Bro, there's no " + name + " on ma' list.");
-                    System.out.println();
-                }
-            }
-            if (opcio != 1 && opcio != 2) {
-                System.out.println("Enter a correct number!");
-                System.out.println();
-                System.out.print("Choose an option: ");
+            try {
                 opcio = scanner.nextInt();
+                scanner.nextLine();
+                switch (opcio) {
+                    case 1:
+                        System.out.println();
+                        System.out.print("Enter your artistic name: ");
+                        name = scanner.nextLine();
+                        flagStageName = 0;
+                        for (int i = 0; i < rapper.size(); i++) {
+                            if (name.equals(rapper.get(i).getStageName())) {
+                                flagStageName = 1;
+                            }
+                        }
+                        if (flagStageName == 1) {
+                            Dashboard(competicion, name, rapper);
+                            System.out.println();
+                        } else {
+                            System.out.println("Bro, there's no " + name + " on ma' list.");
+                            System.out.println();
+                        }
+                        break;
+                    case 2:
+                        break;
+                    default:
+                        System.out.println();
+                        System.out.println("ERROR: Option incorrect");
+                        System.out.println();
+                        break;
+                }
+            } catch (InputMismatchException e) {
+                System.out.println();
+                System.out.println("ERROR: Option incorrect");
+                System.out.println();
+                scanner.nextLine();
             }
-
         }
-
     }
 
     private void Login(ArrayList<Rapper> rapper, ArrayList<Countries> countries) throws IOException, ParseException {
@@ -170,18 +178,18 @@ public class MenuController {
         // Comprobamos que la fecha introducida tiene el formato correcto
         valid = checkBirthFormat(birth);
 
-        // Comprobamos que la fecha introducida és correcta
-        valid = checkBirth(birth);
-
-        // Comprobamos si el pais existe
-        for (int i = 0; i < countries.size(); i++) {
-            if (countries.get(i).getName().equals(nationality)) {
-                flagCountries = 1;
-            }
+        if (valid) {
+            // Comprobamos que la fecha introducida és correcta
+            valid = checkBirth(birth);
         }
 
-        // Comprobamos que el nivel sea correcto
-        valid = checkLevel(level);
+        // Comprobamos si el pais existe
+        flagCountries = checkCountry(countries, nationality);
+
+        if (valid) {
+            // Comprobamos que el nivel sea correcto
+            valid = checkLevel(level);
+        }
 
         // En el caso que todo sea correcto, procedemos a guardar el nuevo rapero
         if (flagCountries == 1 && valid == true && flagStageName == 0) {
@@ -191,10 +199,8 @@ public class MenuController {
             rapper.add(rapper2);
             System.out.println("Registration complete!");
 
-            // Falta acabar de implementar la escritura
-            JsonHelper.añadirRapero(rapper2);
-        } else {
-            System.out.println("ERROR: The nation does not exist");
+            // TODO: Falta acabar de implementar la escritura
+            // JsonHelper.añadirRapero(rapper2);
         }
 
     }
@@ -214,13 +220,24 @@ public class MenuController {
         try {
             sdf.parse(birth);
             sdf.setLenient(false);
-
             return true;
 
         } catch (ParseException e) {
             System.out.println("ERROR: The format of the date of birth introduced is not correct.");
             return false;
         }
+    }
+
+    private int checkCountry(ArrayList<Countries> countries, String nationality) {
+        for (int i = 0; i < countries.size(); i++) {
+            if (countries.get(i).getName().equals(nationality)) {
+                return 1;
+            }
+        }
+        System.out.println();
+        System.out.println("ERROR: The nation does not exist");
+        System.out.println();
+        return 0;
     }
 
     private boolean checkBirth(String birth) { // FICAR ELS RETURN QUAN ARRIBI AL FINAL DEL CODIG
@@ -359,14 +376,14 @@ public class MenuController {
                 scanner.nextLine();
                 switch (opcio2) {
                     case 1:
-                        // Start the battle
+                        // TODO: Start the battle
                         break;
                     case 2:
                         // Show ranking
                         Rapper.mostrarRanking(rapper);
                         break;
                     case 3:
-                        // Create profile
+                        // TODO: Create profile
                         break;
                     case 4:
                         // Leave competition;
@@ -376,7 +393,6 @@ public class MenuController {
                         break;
                 }
             } catch (InputMismatchException e) {
-                // TODO: handle exception
                 System.out.println("ERROR: Option incorrect");
                 scanner.nextLine();
             }

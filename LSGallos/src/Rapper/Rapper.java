@@ -1,7 +1,6 @@
 package Rapper;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class Rapper {
     private String realName;
@@ -22,6 +21,30 @@ public class Rapper {
         this.photo = photo;
         score = 0;
         winner = false;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public String getNationality() {
+        return nationality;
+    }
+
+    public String getBirth() {
+        return birth;
+    }
+
+    public String getRealName() {
+        return realName;
     }
 
     public int getWinner(ArrayList<Rapper> rapper) {
@@ -50,14 +73,15 @@ public class Rapper {
     }
 
     public static void mostrarRanking(ArrayList<Rapper> rapper) {
-        Collections.sort(rapper, Collections.reverseOrder());
+        // Collections.sort(rapper, Collections.reverseOrder());
+        rapper.sort((o1, o2) -> Float.compare(o2.getScore(), o1.getScore()));
 
         System.out.println("------------------------------------");
         System.out.println("| POS | Name               | SCORE |");
         System.out.println("------------------------------------");
 
         for (int i = 0; i < rapper.size(); i++) {
-            System.out.println(i + " " + rapper.get(i).stageName + " " + rapper.get(i).score);
+            System.out.println("  " + (i + 1) + "\t" + rapper.get(i).stageName + "   " + "\t\t" + rapper.get(i).score);
         }
     }
 }
