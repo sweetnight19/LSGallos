@@ -3,12 +3,9 @@ package JsonHelper;
 import Competicion.Competicion;
 import Countries.Countries;
 import Rapper.Rapper;
-import netscape.javascript.JSObject;
-
+import Themes.Theme;
 import com.google.gson.*;
 
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -53,25 +50,47 @@ public class JsonHelper {
     }
 
     public static void añadirRapero(Rapper rapper) throws IOException {
-        Path p = Paths.get("JSON/competicio.json");
-        String json = Files.readString(p);
-        element = JsonParser.parseString(json);
+        /*
+         * Versio del Artur
+         * 
+         * JsonElement element; JsonObject json = new JsonObject(); Path p =
+         * Paths.get("JSON/competicio.json"); Gson gson = new
+         * GsonBuilder().setDateFormat("yyyy-MM-dd").setPrettyPrinting().create();
+         * 
+         * json.add("competition",
+         * JsonParser.parseString(gson.toJson(competition)).getAsJsonObject()); element
+         * = json.get("competition").getAsJsonObject().get("countries");
+         * json.add("countries", element);
+         * json.get("competition").getAsJsonObject().remove("countries");
+         * 
+         * element = json.get("competition").getAsJsonObject().get("rappers");
+         * json.add("rappers", element);
+         * json.get("competition").getAsJsonObject().remove("rappers");
+         * 
+         * Files.writeString(p, gson.toJson(json));
+         */
 
-        JsonObject object = new JsonObject();
-        //object.getAsJsonArray("rappers").add(element);
-        object.addProperty("realName", rapper.getRealName());
-        object.addProperty("stageName", rapper.getStageName());
-        object.addProperty("birth", rapper.getBirth());
-        object.addProperty("nationality", rapper.getNationality());
-        object.addProperty("level", rapper.getLevel());
-        object.addProperty("photo", rapper.getPhoto());
+        /*
+         * Versio meva
+         * 
+         * Path p = Paths.get("JSON/competicio.json"); String json =
+         * Files.readString(p); element = JsonParser.parseString(json);
+         * 
+         * JsonObject object = new JsonObject();
+         * //object.getAsJsonArray("rappers").add(element);
+         * object.addProperty("realName", rapper.getRealName());
+         * object.addProperty("stageName", rapper.getStageName());
+         * object.addProperty("birth", rapper.getBirth());
+         * object.addProperty("nationality", rapper.getNationality());
+         * object.addProperty("level", rapper.getLevel()); object.addProperty("photo",
+         * rapper.getPhoto());
+         * 
+         * element.getAsJsonObject().getAsJsonArray("rappers").add(object.toString());
+         * Gson gson = new GsonBuilder().setPrettyPrinting().create(); FileWriter fw =
+         * new FileWriter("JSON/competicio.json"); fw.write(gson.toJson(element));
+         * fw.close();
+         */
 
-        element.getAsJsonObject().getAsJsonArray("rappers").add(object.toString());
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        FileWriter fw = new FileWriter("JSON/competicio.json");
-        fw.write(gson.toJson(element));
-        fw.close();
-        
         /*
          * Versio del Pol
          * 
@@ -110,5 +129,17 @@ public class JsonHelper {
          * e.getMessage()); } } catch (IOException | ParseException e){
          * System.out.println(e.getMessage()); }
          */
+    }
+
+    public static void importRhymes(ArrayList<Theme> themList) throws IOException {
+        Path p = Paths.get("JSON/batalles.json");
+        Gson gson = new Gson();
+        String json = Files.readString(p);
+        JsonElement element2 = JsonParser.parseString(json);
+        JsonObject object = element2.getAsJsonObject();
+
+        for (int i = 0; i < object.getAsJsonArray("themes").size(); i++) {
+            themList.add(gson.fromJson(object.getAsJsonArray("themes").get(i).getAsJsonObject(), Theme.class));
+        }
     }
 }

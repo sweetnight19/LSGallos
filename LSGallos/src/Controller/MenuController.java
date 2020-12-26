@@ -15,6 +15,7 @@ import Competicion.Competicion;
 import Countries.Countries;
 import JsonHelper.JsonHelper;
 import Rapper.Rapper;
+import Themes.Theme;
 
 public class MenuController {
     private int opcio;
@@ -71,7 +72,7 @@ public class MenuController {
 
     }
 
-    private void MenuLogin(Competicion competicion, ArrayList<Rapper> rapper) {
+    private void MenuLogin(Competicion competicion, ArrayList<Rapper> rapper) throws IOException {
         int flagStageName;
         String name;
 
@@ -332,14 +333,18 @@ public class MenuController {
         return false;
     }
 
-    private void Dashboard(Competicion competicion, String name, ArrayList<Rapper> rapper) {
+    private void Dashboard(Competicion competicion, String name, ArrayList<Rapper> rapper) throws IOException {
 
         Random random = new Random();
 
         int opcio2;
         int score;
         int contrincant;
+        ArrayList<Theme> themList= new ArrayList<>();
 
+        //Importamos las rimas
+        JsonHelper.importRhymes(themList);
+        
         competicion.setStatus(1);
         score = 0;
 
