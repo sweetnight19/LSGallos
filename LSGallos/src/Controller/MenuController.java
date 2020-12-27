@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import Battle.Score;
+
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
 import java.util.Random;
@@ -336,15 +338,15 @@ public class MenuController {
     private void Dashboard(Competicion competicion, String name, ArrayList<Rapper> rapper) throws IOException {
 
         Random random = new Random();
-
         int opcio2;
         int score;
         int contrincant;
-        ArrayList<Theme> themList= new ArrayList<>();
+        String type;
+        ArrayList<Theme> themList = new ArrayList<>();
 
-        //Importamos las rimas
+        // Importamos las rimas
         JsonHelper.importRhymes(themList);
-        
+
         competicion.setStatus(1);
         score = 0;
 
@@ -354,19 +356,19 @@ public class MenuController {
             }
         }
 
-        // ASSIGNACIÓ DE CONTRINCANT DE MANERA ALEATORIA CONTRA L'USUARI
-
         do {
             contrincant = random.nextInt(rapper.size());
             System.out.println("contrincant: " + contrincant);
         } while (rapper.get(contrincant).getStageName().equals(name));
 
         do {
+            type = Score.getType();
             opcio2 = 0;
+
             System.out.println();
             System.out.println("---------------------------------------------------------------------------------");
             System.out.println("| " + competicion.getName() + " | Phase " + competicion.getStatus() + "/"
-                    + competicion.getPhasesCount() + " | Score: " + score + " | Next battle: " + name + " vs "
+                    + competicion.getPhasesCount() + " | Score: " + score + " | Next battle: " + type + " vs "
                     + rapper.get(contrincant).getStageName() + " |");
             System.out.println("---------------------------------------------------------------------------------");
             System.out.println();
@@ -381,7 +383,14 @@ public class MenuController {
                 scanner.nextLine();
                 switch (opcio2) {
                     case 1:
+                        competicion.batallaInicial(rapper, themList, type, contrincant,name);
                         // TODO: Start the battle
+
+                        if (competicion.getPhasesCount() == 3) {
+                            // Tenemos 3 fases
+                        } else {
+                            // Tenemos 2 fases
+                        }
                         break;
                     case 2:
                         // Show ranking
