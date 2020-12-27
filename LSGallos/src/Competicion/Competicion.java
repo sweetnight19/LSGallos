@@ -2,7 +2,9 @@ package Competicion;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 
+import Battle.Score;
 import Rapper.Rapper;
 import Themes.Theme;
 
@@ -40,42 +42,93 @@ public class Competicion {
     public void batallaInicial(ArrayList<Rapper> rapper, ArrayList<Theme> themList, String type, int contrincant,
             String name) {
         Random random = new Random();
-        int primer = random.nextInt(2);
-        int topic = random.nextInt(themList.size());
+        int primer, topic, puntuacio1, puntuacio2;
+        String rima;
+        Scanner scanner = new Scanner(System.in);
+        Score score = new Score();
+
+        primer = random.nextInt(2);
+        topic = random.nextInt(themList.size());
+        puntuacio1 = 0;
+        puntuacio2 = 0;
 
         System.out.println("----------------------------------------------------------------------------------------");
         System.out.println("Topic: " + themList.get(topic).getName());
         System.out.println();
 
-        if (primer == 1) {
-            //1
+        if (primer == 1) { // Empieza el usuario
+            // 1
             System.out.println("A coin is tossed in the air and....\n" + name + " ,it's your turn! Drop it!");
             System.out.println("\nYour turn!\nEnter your verse: ");
-            //2
+            rima = scanner.nextLine();
+            puntuacio1 += score.countRhymes(rima, type);
+
+            // 2
             System.out.println();
-            System.out.println(rapper.get(contrincant).getStageName()+ " :");
-            System.out.println(themList.get(topic).getRhymes(rapper.get(contrincant).getLevel(), 1));
-            //3
+            System.out.println(rapper.get(contrincant).getStageName() + " :");
+            System.out.println(themList.get(topic).getRhymes(rapper.get(contrincant).getLevel() - 1, 0));
+            rima = themList.get(topic).getRhymes(rapper.get(contrincant).getLevel() - 1, 0);
+            puntuacio2 += score.countRhymes(rima, type);
+
+            // 3
+            System.out.println();
             System.out.println("Your turn!\nEnter your verse: ");
-            //4
+            rima = scanner.nextLine();
+            puntuacio1 += score.countRhymes(rima, type);
+
+            // 4
             System.out.println();
-            System.out.println(rapper.get(contrincant).getStageName()+ " :");
-            System.out.println(themList.get(topic).getRhymes(rapper.get(contrincant).getLevel(), 2));
-        } else {
-            //1
+            System.out.println(rapper.get(contrincant).getStageName() + " :");
+            System.out.println(themList.get(topic).getRhymes(rapper.get(contrincant).getLevel() - 1, 1));
+            rima = themList.get(topic).getRhymes(rapper.get(contrincant).getLevel() - 1, 1);
+            puntuacio2 += score.countRhymes(rima, type);
+
+        } else { // Empieza el contricante
+            // 1
             System.out.println("A coin is tossed in the air and....\n" + rapper.get(contrincant).getStageName()
                     + " ,it's your turn! Drop it!");
-            System.out.println(themList.get(topic).getRhymes(rapper.get(contrincant).getLevel(), 1));
-            //2
-            System.out.println("Your turn!\nEnter your verse: ");
-            //3
             System.out.println();
-            System.out.println(rapper.get(contrincant).getStageName()+ " :");
-            System.out.println(themList.get(topic).getRhymes(rapper.get(contrincant).getLevel(), 2));
-            //4
+            try {
+                System.out.println(themList.get(topic).getRhymes(rapper.get(contrincant).getLevel() - 1, 0));
+                rima = themList.get(topic).getRhymes(rapper.get(contrincant).getLevel() - 1, 0);
+                puntuacio2 += score.countRhymes(rima, type);
+            } catch (IndexOutOfBoundsException e) {
+                System.out.println("Me quedado en blanco...");
+            }
+
+            // 2
+            System.out.println();
             System.out.println("Your turn!\nEnter your verse: ");
+            rima = scanner.nextLine();
+            puntuacio1 += score.countRhymes(rima, type);
+
+            // 3
+            System.out.println();
+            System.out.println(rapper.get(contrincant).getStageName() + " :");
+            try {
+                System.out.println(themList.get(topic).getRhymes(rapper.get(contrincant).getLevel() - 1, 1));
+                rima = themList.get(topic).getRhymes(rapper.get(contrincant).getLevel() - 1, 1);
+                puntuacio2 += score.countRhymes(rima, type);
+            } catch (IndexOutOfBoundsException e) {
+                System.out.println("Me quedado en blanco...");
+            }
+
+            // 4
+            System.out.println();
+            System.out.println("Your turn!\nEnter your verse: ");
+            rima = scanner.nextLine();
+            puntuacio1 += score.countRhymes(rima, type);
         }
 
+        // Actualizamos la puntuacion
+        rapper.get(contrincant).setScore(puntuacio2);
+
+        for (int i = 0; i < rapper.size(); i++) {
+            if (rapper.get(i).getStageName().equals(name)) {
+                rapper.get(i).setScore(puntuacio1);
+            }
+        }
+        System.out.println();
     }
 
 }

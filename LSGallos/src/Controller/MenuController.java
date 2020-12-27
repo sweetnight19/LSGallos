@@ -350,20 +350,20 @@ public class MenuController {
         competicion.setStatus(1);
         score = 0;
 
-        for (int i = 0; i < rapper.size(); i++) {
-            if (name.equals(rapper.get(i).getStageName())) {
-                score = rapper.get(i).getScore();
-            }
-        }
-
-        do {
-            contrincant = random.nextInt(rapper.size());
-            System.out.println("contrincant: " + contrincant);
-        } while (rapper.get(contrincant).getStageName().equals(name));
-
         do {
             type = Score.getType();
             opcio2 = 0;
+
+            for (int i = 0; i < rapper.size(); i++) {
+                if (name.equals(rapper.get(i).getStageName())) {
+                    score = rapper.get(i).getScore();
+                }
+            }
+
+            do {
+                contrincant = random.nextInt(rapper.size());
+                System.out.println("contrincant: " + contrincant);
+            } while (rapper.get(contrincant).getStageName().equals(name));
 
             System.out.println();
             System.out.println("---------------------------------------------------------------------------------");
@@ -383,8 +383,8 @@ public class MenuController {
                 scanner.nextLine();
                 switch (opcio2) {
                     case 1:
-                        competicion.batallaInicial(rapper, themList, type, contrincant,name);
                         // TODO: Start the battle
+                        competicion.batallaInicial(rapper, themList, type, contrincant, name);
 
                         if (competicion.getPhasesCount() == 3) {
                             // Tenemos 3 fases

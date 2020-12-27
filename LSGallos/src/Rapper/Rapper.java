@@ -65,7 +65,7 @@ public class Rapper {
     }
 
     public void setScore(int score) {
-        this.score = score;
+        this.score += score;
     }
 
     public String getStageName() {

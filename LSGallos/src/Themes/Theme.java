@@ -11,10 +11,10 @@ public class Theme {
     }
 
     public String getRhymes(int level,int turno) {
-        if (level==1) {
-            return rhymes.get(level-1).getNivell1(turno-1);
+        if (level==0) {
+            return rhymes.get(level).getNivell1(turno);
         } else {
-            return rhymes.get(level-1).getNivell2(turno-1);
+            return rhymes.get(level).getNivell2(turno);
         }
         
     }
