@@ -348,7 +348,7 @@ public class MenuController {
         // Importamos las rimas
         JsonHelper.importRhymes(themList);
 
-        competicion.setStatus(1);
+        //competicion.setStatus(1);
         score = 0;
 
         do {
