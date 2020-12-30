@@ -8,6 +8,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import Battle.Score;
+import Battle.Threads;
 
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
@@ -354,15 +355,15 @@ public class MenuController {
             type = Score.getType();
             opcio2 = 0;
 
-            for (int i = 0; i < rapper.size(); i++) {
+            for (int i = 0, flag = 0; i < rapper.size() && flag == 0; i++) {
                 if (name.equals(rapper.get(i).getStageName())) {
                     score = rapper.get(i).getScore();
+                    flag = 1;
                 }
             }
 
             do {
                 contrincant = random.nextInt(rapper.size());
-                System.out.println("contrincant: " + contrincant);
             } while (rapper.get(contrincant).getStageName().equals(name));
 
             System.out.println();
@@ -384,8 +385,10 @@ public class MenuController {
                 switch (opcio2) {
                     case 1:
                         // TODO: Start the battle
+                        competicion.getFase(rapper, name, contrincant, themList, type);
                         competicion.batallaInicial(rapper, themList, type, contrincant, name);
-
+                        rapper = competicion.getResult(rapper);
+                        competicion.setStatus(2);
                         if (competicion.getPhasesCount() == 3) {
                             // Tenemos 3 fases
                         } else {

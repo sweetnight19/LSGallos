@@ -72,6 +72,12 @@ public class Rapper {
         return stageName;
     }
 
+    /*
+     * Per alinear totes les puntuacións podem posar una mesura que serà com la base
+     * que totes ahurien d'anar, i després restar la longitud del nom del
+     * participant per tenir totes les puntuacións en una columna
+     */
+
     public static void mostrarRanking(ArrayList<Rapper> rapper) {
         // Collections.sort(rapper, Collections.reverseOrder());
         rapper.sort((o1, o2) -> Float.compare(o2.getScore(), o1.getScore()));

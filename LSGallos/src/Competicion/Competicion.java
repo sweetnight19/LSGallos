@@ -5,6 +5,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 import Battle.Score;
+import Battle.Threads;
 import Rapper.Rapper;
 import Themes.Theme;
 
@@ -14,6 +15,12 @@ public class Competicion {
     private String endDate;
     private ArrayList<phases> phases;
     private int status;
+    private ArrayList<Threads> threads = new ArrayList<Threads>();
+    private int[] players;
+
+    public Competicion() {
+        status = 1;
+    }
 
     public String getName() {
         return name;
@@ -66,9 +73,13 @@ public class Competicion {
             // 2
             System.out.println();
             System.out.println(rapper.get(contrincant).getStageName() + " :");
-            System.out.println(themList.get(topic).getRhymes(rapper.get(contrincant).getLevel() - 1, 0));
-            rima = themList.get(topic).getRhymes(rapper.get(contrincant).getLevel() - 1, 0);
-            puntuacio2 += score.countRhymes(rima, type);
+            try {
+                System.out.println(themList.get(topic).getRhymes(rapper.get(contrincant).getLevel() - 1, 0));
+                rima = themList.get(topic).getRhymes(rapper.get(contrincant).getLevel() - 1, 0);
+                puntuacio2 += score.countRhymes(rima, type);
+            } catch (IndexOutOfBoundsException e) {
+                System.out.println("Me quedado en blanco...");
+            }
 
             // 3
             System.out.println();
@@ -79,9 +90,13 @@ public class Competicion {
             // 4
             System.out.println();
             System.out.println(rapper.get(contrincant).getStageName() + " :");
-            System.out.println(themList.get(topic).getRhymes(rapper.get(contrincant).getLevel() - 1, 1));
-            rima = themList.get(topic).getRhymes(rapper.get(contrincant).getLevel() - 1, 1);
-            puntuacio2 += score.countRhymes(rima, type);
+            try {
+                System.out.println(themList.get(topic).getRhymes(rapper.get(contrincant).getLevel() - 1, 1));
+                rima = themList.get(topic).getRhymes(rapper.get(contrincant).getLevel() - 1, 1);
+                puntuacio2 += score.countRhymes(rima, type);
+            } catch (IndexOutOfBoundsException e) {
+                System.out.println("Me quedado en blanco...");
+            }
 
         } else { // Empieza el contricante
             // 1
@@ -123,12 +138,82 @@ public class Competicion {
         // Actualizamos la puntuacion
         rapper.get(contrincant).setScore(puntuacio2);
 
-        for (int i = 0; i < rapper.size(); i++) {
+        for (int i = 0, flag = 0; i < rapper.size() && flag == 0; i++) {
             if (rapper.get(i).getStageName().equals(name)) {
                 rapper.get(i).setScore(puntuacio1);
+                flag = 1;
             }
         }
         System.out.println();
     }
 
+    public void getFase(ArrayList<Rapper> rapper, String name, int contricant, ArrayList<Theme> themList, String type) {
+        int usuario, aux;
+        Random random = new Random();
+
+        usuario = -1;
+
+        // Buscamos el numero que corresponde al usuario
+        for (int i = 0, flag = 0; i < rapper.size() && flag == 0; i++) {
+            if (rapper.get(i).getStageName().equals(name)) {
+                usuario = i;
+                flag = 1;
+            }
+        }
+
+        // Comprovamos el array y descartamos en el caso que sea impar
+        // el numero de raperos
+        if (rapper.size() % 2 == 0) {
+            players = new int[rapper.size()];
+        } else {
+            players = new int[rapper.size() - 1];
+        }
+
+        // Inicializamos el array a -1 para tener una referencia
+        for (int i = 0; i < players.length; i++) {
+            players[i] = -1;
+        }
+
+        // Asignamos el emparejamiento
+        players[usuario] = contricant;
+        players[contricant] = usuario;
+        for (int i = 0; i < players.length; i++) {
+            do {
+                aux = random.nextInt(players.length);
+                if (players[i] == -1 && aux != i) {
+                    players[i] = aux;
+                    players[aux] = i;
+                }
+            } while (aux == i);
+
+        }
+
+        for (int i = 0; i < players.length / 2; i++) {
+            threads.add(new Threads(rapper.get(i), rapper.get(players[players[i]]), themList, type));
+            threads.get(i).run();
+        }
+    }
+
+    public ArrayList<Rapper> getResult(ArrayList<Rapper> rapper) {
+        Rapper rapero1, rapero2;
+        for (int i = 0; i < threads.size(); i++) {
+            rapero1 = threads.get(i).getRapero1();
+            rapero2 = threads.get(i).getRapero2();
+            for (int j = 0, flag = 0; j < rapper.size() && flag == 0; j++) {
+                if (rapper.get(j).getStageName().equals(rapero1.getStageName())) {
+                    rapper.remove(j);
+                    rapper.add(rapero1);
+                    flag = 1;
+                }
+            }
+            for (int j = 0, flag = 0; j < rapper.size() && flag == 0; j++) {
+                if (rapper.get(j).getStageName().equals(rapero2.getStageName())) {
+                    rapper.remove(j);
+                    rapper.add(rapero2);
+                    flag = 1;
+                }
+            }
+        }
+        return rapper;
+    }
 }

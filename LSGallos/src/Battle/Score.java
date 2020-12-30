@@ -52,8 +52,8 @@ public class Score {
                 cadenaStrings.add(paragref);
             }
         }
-        myString.setCharAt(0, rima.charAt(rima.length() - 2));
-        myString.setCharAt(1, rima.charAt(rima.length() - 1));
+        myString.setCharAt(0, rima.charAt(rima.length() - 3));
+        myString.setCharAt(1, rima.charAt(rima.length() - 2));
         paragref = myString.toString();
         cadenaStrings.add(paragref);
 
