@@ -360,7 +360,6 @@ public class MenuController {
                 scanner.nextLine();
                 switch (opcio2) {
                     case 1:
-                        // TODO: Start the battle
                         if (competicion.isFinish() == true) {
                             System.out.println();
                             System.out.println("Competition ended. You can't battle anyone else!");

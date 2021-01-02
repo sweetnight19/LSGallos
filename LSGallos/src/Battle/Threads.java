@@ -20,6 +20,7 @@ public class Threads implements Runnable {
 
     @Override
     public void run() {
+        // TODO: check score
         Random random = new Random();
         int topic, puntuacio1, puntuacio2;
         String rima;
@@ -63,11 +64,11 @@ public class Threads implements Runnable {
 
     }
 
-    public Rapper getRapero1(){
+    public Rapper getRapero1() {
         return rapper1;
     }
 
-    public Rapper getRapero2(){
+    public Rapper getRapero2() {
         return rapper2;
     }
 }
