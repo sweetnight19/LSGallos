@@ -15,11 +15,21 @@ public class Competicion {
     private String endDate;
     private ArrayList<phases> phases;
     private int status;
+    private boolean finish;
     private ArrayList<Threads> threads = new ArrayList<Threads>();
     private int[] players;
 
     public Competicion() {
         status = 1;
+        setFinish(false);
+    }
+
+    public boolean isFinish() {
+        return finish;
+    }
+
+    public void setFinish(boolean finish) {
+        this.finish = finish;
     }
 
     public String getName() {
@@ -215,5 +225,21 @@ public class Competicion {
             }
         }
         return rapper;
+    }
+
+    public static void eliminarRaperos(ArrayList<Rapper> rapper, int countPhases, int status) {
+        // Ultima fase
+        if ((countPhases == 2 && status == 2) || (countPhases == 3 && status == 3)) {
+            for (int i = rapper.size() - 1; rapper.size() > 2; i--) {
+                rapper.remove(i);
+            }
+
+        } else {
+            // Penultima fase
+            for (int i = rapper.size() - 1, count = rapper.size() / 2; rapper.size() > count; i--) {
+                rapper.remove(i);
+            }
+
+        }
     }
 }

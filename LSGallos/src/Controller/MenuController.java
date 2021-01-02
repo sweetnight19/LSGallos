@@ -8,8 +8,6 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import Battle.Score;
-import Battle.Threads;
-
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
 import java.util.Random;
@@ -184,7 +182,7 @@ public class MenuController {
 
         if (valid) {
             // Comprobamos que la fecha introducida és correcta
-            valid = checkBirth(birth);
+            // valid = checkBirth(birth);
         }
 
         // Comprobamos si el pais existe
@@ -244,97 +242,48 @@ public class MenuController {
         return 0;
     }
 
-    private boolean checkBirth(String birth) { // FICAR ELS RETURN QUAN ARRIBI AL FINAL DEL CODIG
-
-        int date = 0;
-        int month = 0;
-        int year = 0;
-
-        String cdate;
-        String cmonth;
-        String cyear;
-
-        boolean leap = false; // leap == bisiesto
-
-        int x = 0;
-
-        // PASANT LES DATES A VARIABLES INDIVIDUALS PER MES ENDAVANT FER LA COMPROBACIÓ
-
-        for (int i = 0; i < birth.length(); i++) {
-            if (birth.charAt(i) != '-') {
-                if (i < 2) {
-                    // cdate.charAt(x) = birth.charAt(i);
-                } else {
-                    x = 0;
-                    if (i < 5) {
-                        // cmonth.charAt(x) = birth.charAt(i);
-                    } else {
-                        // cyear.charAt(x) = birth.charAt(i);
-                    }
-                }
-            }
-        }
-
-        // date = Integer.parseInt(cdate);
-        // month = Integer.parseInt(cmonth);
-        // year = Integer.parseInt(cyear);
-
-        // CHECK ANY DE TRASPAS
-
-        // ANY DIVIDIBLE PER 4
-        if (year % 4 == 0) {
-
-            // ANY DIVIDIBLE PER 100
-            if (year % 100 == 0) {
-
-                // ANY DIVIDIBLE PER 400
-                if (year % 400 == 0) {
-                    leap = true; // ANY DE TRASPAS
-                } else {
-                    leap = false;
-                }
-            } else {
-                leap = true; // ANY DE TRASPAS
-            }
-        } else {
-            leap = false;
-        }
-
-        // CHECK DATA CORRECTA
-
-        if (month == 2) {
-            if (date <= 28) {
-                return true;
-            } else {
-                if (date == 29) {
-                    if (leap == true) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                }
-            }
-        } else {
-            if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) {
-                if (date <= 30) {
-                    return true;
-                } else {
-                    return false;
-                }
-            } else {
-                if (month > 12) {
-                    return false;
-                } else {
-                    if (date <= 31) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                }
-            }
-        }
-        return false;
-    }
+    /*
+     * private boolean checkBirth(String birth) { // FICAR ELS RETURN QUAN ARRIBI AL
+     * FINAL DEL CODIG
+     * 
+     * int date = 0; int month = 0; int year = 0;
+     * 
+     * String cdate; String cmonth; String cyear;
+     * 
+     * boolean leap = false; // leap == bisiesto
+     * 
+     * int x = 0;
+     * 
+     * // PASANT LES DATES A VARIABLES INDIVIDUALS PER MES ENDAVANT FER LA
+     * COMPROBACIÓ
+     * 
+     * for (int i = 0; i < birth.length(); i++) { if (birth.charAt(i) != '-') { if
+     * (i < 2) { // cdate.charAt(x) = birth.charAt(i); } else { x = 0; if (i < 5) {
+     * // cmonth.charAt(x) = birth.charAt(i); } else { // cyear.charAt(x) =
+     * birth.charAt(i); } } } }
+     * 
+     * // date = Integer.parseInt(cdate); // month = Integer.parseInt(cmonth); //
+     * year = Integer.parseInt(cyear);
+     * 
+     * // CHECK ANY DE TRASPAS
+     * 
+     * // ANY DIVIDIBLE PER 4 if (year % 4 == 0) {
+     * 
+     * // ANY DIVIDIBLE PER 100 if (year % 100 == 0) {
+     * 
+     * // ANY DIVIDIBLE PER 400 if (year % 400 == 0) { leap = true; // ANY DE
+     * TRASPAS } else { leap = false; } } else { leap = true; // ANY DE TRASPAS } }
+     * else { leap = false; }
+     * 
+     * // CHECK DATA CORRECTA
+     * 
+     * if (month == 2) { if (date <= 28) { return true; } else { if (date == 29) {
+     * if (leap == true) { return true; } else { return false; } } } } else { if
+     * (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month
+     * == 10 || month == 12) { if (date <= 30) { return true; } else { return false;
+     * } } else { if (month > 12) { return false; } else { if (date <= 31) { return
+     * true; } else { return false; } } } } return false; }
+     */
 
     private void Dashboard(Competicion competicion, String name, ArrayList<Rapper> rapper) throws IOException {
 
@@ -348,7 +297,7 @@ public class MenuController {
         // Importamos las rimas
         JsonHelper.importRhymes(themList);
 
-        //competicion.setStatus(1);
+        // competicion.setStatus(1);
         score = 0;
 
         do {
@@ -367,13 +316,40 @@ public class MenuController {
             } while (rapper.get(contrincant).getStageName().equals(name));
 
             System.out.println();
-            System.out.println("---------------------------------------------------------------------------------");
-            System.out.println("| " + competicion.getName() + " | Phase " + competicion.getStatus() + "/"
-                    + competicion.getPhasesCount() + " | Score: " + score + " | Next battle: " + type + " vs "
-                    + rapper.get(contrincant).getStageName() + " |");
-            System.out.println("---------------------------------------------------------------------------------");
+            if (competicion.isFinish() == false) {
+                System.out.println("---------------------------------------------------------------------------------");
+                System.out.println("| " + competicion.getName() + " | Phase " + competicion.getStatus() + "/"
+                        + competicion.getPhasesCount() + " | Score: " + score + " | Next battle: " + type + " vs "
+                        + rapper.get(contrincant).getStageName() + " |");
+                System.out.println("---------------------------------------------------------------------------------");
+
+            } else {
+                if (rapper.get(0).getStageName().equals(name)) {
+                    System.out.println(
+                            "---------------------------------------------------------------------------------");
+                    System.out.println("| " + competicion.getName() + " | Phase " + competicion.getStatus() + "/"
+                            + competicion.getPhasesCount() + " | Score: " + rapper.get(0).getScore() + " | You win, "
+                            + name + ". Good save the queen. |");
+                    System.out.println(
+                            "---------------------------------------------------------------------------------");
+
+                } else {
+                    System.out.println(
+                            "---------------------------------------------------------------------------------");
+                    System.out.println("| " + competicion.getName() + " | Phase " + competicion.getStatus() + "/"
+                            + competicion.getPhasesCount() + " | Score: " + rapper.get(0).getScore() + " | You lost, "
+                            + name + ". Try to get good. |");
+                    System.out.println(
+                            "---------------------------------------------------------------------------------");
+                }
+
+            }
             System.out.println();
-            System.out.println("1. Start the battle");
+            if (competicion.isFinish() == false) {
+                System.out.println("1. Start the battle");
+            } else {
+                System.out.println("1. Start the battle (deactivated)");
+            }
             System.out.println("2. Show ranking");
             System.out.println("3. Create profile");
             System.out.println("4. Leave competition");
@@ -385,15 +361,44 @@ public class MenuController {
                 switch (opcio2) {
                     case 1:
                         // TODO: Start the battle
-                        competicion.getFase(rapper, name, contrincant, themList, type);
-                        competicion.batallaInicial(rapper, themList, type, contrincant, name);
-                        rapper = competicion.getResult(rapper);
-                        competicion.setStatus(2);
-                        if (competicion.getPhasesCount() == 3) {
-                            // Tenemos 3 fases
+                        if (competicion.isFinish() == true) {
+                            System.out.println();
+                            System.out.println("Competition ended. You can't battle anyone else!");
                         } else {
-                            // Tenemos 2 fases
+                            if (competicion.getStatus() == 1) {
+                                competicion.getFase(rapper, name, contrincant, themList, type);
+                                competicion.batallaInicial(rapper, themList, type, contrincant, name);
+                                rapper = competicion.getResult(rapper);
+                                Rapper.ordenaRappers(rapper);
+                                competicion.setStatus(2);
+                                Competicion.eliminarRaperos(rapper, competicion.getPhasesCount(),
+                                        competicion.getStatus());
+                            } else {
+                                if (competicion.getPhasesCount() == 3 && competicion.getStatus() == 2) {
+                                    // Tenemos 3 fases
+                                    competicion.getFase(rapper, name, contrincant, themList, type);
+                                    competicion.batallaInicial(rapper, themList, type, contrincant, name);
+                                    rapper = competicion.getResult(rapper);
+                                    Rapper.ordenaRappers(rapper);
+                                    competicion.setStatus(3);
+                                    Competicion.eliminarRaperos(rapper, competicion.getPhasesCount(),
+                                            competicion.getStatus());
+                                } else {
+                                    if (competicion.getPhasesCount() == 3 && competicion.getStatus() == 3) {
+                                        // Final de la 3 fase
+                                        competicion.batallaInicial(rapper, themList, type, contrincant, name);
+                                        competicion.setFinish(true);
+                                    } else {
+                                        // Final de la 2 fase
+                                        competicion.batallaInicial(rapper, themList, type, contrincant, name);
+                                        competicion.setFinish(true);
+                                    }
+                                    Rapper.ordenaRappers(rapper);
+                                    rapper.get(0).setWinner(true);
+                                }
+                            }
                         }
+
                         break;
                     case 2:
                         // Show ranking

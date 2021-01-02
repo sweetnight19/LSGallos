@@ -80,7 +80,8 @@ public class Rapper {
 
     public static void mostrarRanking(ArrayList<Rapper> rapper) {
         // Collections.sort(rapper, Collections.reverseOrder());
-        rapper.sort((o1, o2) -> Float.compare(o2.getScore(), o1.getScore()));
+        // rapper.sort((o1, o2) -> Float.compare(o2.getScore(), o1.getScore()));
+        ordenaRappers(rapper);
 
         System.out.println("------------------------------------");
         System.out.println("| POS | Name               | SCORE |");
@@ -89,5 +90,12 @@ public class Rapper {
         for (int i = 0; i < rapper.size(); i++) {
             System.out.println("  " + (i + 1) + "\t" + rapper.get(i).stageName + "   " + "\t\t" + rapper.get(i).score);
         }
+    }
+
+    public static void ordenaRappers(ArrayList<Rapper> rapper) {
+
+        // Collections.sort(rapper, Collections.reverseOrder());
+        rapper.sort((o1, o2) -> Float.compare(o2.getScore(), o1.getScore()));
+
     }
 }
