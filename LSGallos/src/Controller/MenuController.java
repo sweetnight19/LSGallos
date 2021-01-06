@@ -291,7 +291,7 @@ public class MenuController {
         int opcio2;
         int score;
         int contrincant;
-        String type;
+        String type, consultantHtml;
         ArrayList<Theme> themList = new ArrayList<>();
 
         // Importamos las rimas
@@ -404,7 +404,23 @@ public class MenuController {
                         Rapper.mostrarRanking(rapper);
                         break;
                     case 3:
-                        // TODO: Create profile
+                        // Create Profile
+                        System.out.println();
+                        System.out.print("Enter the name of the rapper: ");
+                        consultantHtml = scanner.nextLine();
+                        for (int i = 0, flag = 0; i < rapper.size() && flag == 0; i++) {
+                            if (rapper.get(i).getName().equals(consultantHtml)
+                                    || rapper.get(i).getStageName().equals(consultantHtml)) {
+                                rapper.get(0).createProfileHtml(rapper.get(i));
+                                flag = 1;
+                            }
+                            if (i == rapper.size() - 1) {
+                                System.out.println();
+                                System.out.println("ERROR: The rapper does not exist!!");
+                                System.out.println();
+                            }
+                        }
+
                         break;
                     case 4:
                         // Leave competition;
@@ -418,6 +434,5 @@ public class MenuController {
                 scanner.nextLine();
             }
         } while (opcio2 != 4);
-
     }
 }
