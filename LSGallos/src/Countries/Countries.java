@@ -7,6 +7,10 @@ public class Countries {
         this.name = name;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getName() {
         return name;
     }

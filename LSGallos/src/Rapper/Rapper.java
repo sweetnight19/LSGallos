@@ -1,5 +1,12 @@
 package Rapper;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+import edu.salleurl.profile.Profile;
+import edu.salleurl.profile.ProfileFactory;
+import edu.salleurl.profile.Profileable;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -7,14 +14,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
-
-import edu.salleurl.profile.Profile;
-import edu.salleurl.profile.ProfileFactory;
-import edu.salleurl.profile.Profileable;
 
 public class Rapper implements Profileable {
     private String realName;
@@ -39,10 +38,18 @@ public class Rapper implements Profileable {
         winner = false;
     }
 
+    
+    /** 
+     * @return ArrayList<String>
+     */
     public ArrayList<String> getIdiomas() {
         return idiomas;
     }
 
+    
+    /** 
+     * @param idioma
+     */
     private void addIdiomas(String idioma) {
         idiomas.add(idioma);
     }
@@ -51,38 +58,75 @@ public class Rapper implements Profileable {
         winner = false;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getPhoto() {
         return photo;
     }
 
+    
+    /** 
+     * @return int
+     */
     public int getLevel() {
         return level;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getBandera() {
         return bandera;
     }
 
+    
+    /** 
+     * @param flag
+     */
     private void setBandera(String flag) {
         bandera = flag;
     }
 
+    
+    /** 
+     * @param level
+     */
     public void setLevel(int level) {
         this.level = level;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getNationality() {
         return nationality;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getBirth() {
         return birth;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getRealName() {
         return realName;
     }
 
+    
+    /** 
+     * @param rapper
+     * @return int
+     */
     public int getWinner(ArrayList<Rapper> rapper) {
         for (int i = 0; i < rapper.size(); i++) {
             if (rapper.get(i).winner == true) {
@@ -92,26 +136,50 @@ public class Rapper implements Profileable {
         return 0;
     }
 
+    
+    /** 
+     * @param winner
+     */
     public void setWinner(boolean winner) {
         this.winner = winner;
     }
 
+    
+    /** 
+     * @return int
+     */
     public int getScore() {
         return score;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getScoreHtml() {
         return "" + score;
     }
 
+    
+    /** 
+     * @param score
+     */
     public void setScore(int score) {
         this.score += score;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getStageName() {
         return stageName;
     }
 
+    
+    /** 
+     * @param rapper
+     */
     public static void mostrarRanking(ArrayList<Rapper> rapper) {
         // Collections.sort(rapper, Collections.reverseOrder());
         // rapper.sort((o1, o2) -> Float.compare(o2.getScore(), o1.getScore()));
@@ -126,6 +194,10 @@ public class Rapper implements Profileable {
         }
     }
 
+    
+    /** 
+     * @param rapper
+     */
     public static void ordenaRappers(ArrayList<Rapper> rapper) {
 
         // Collections.sort(rapper, Collections.reverseOrder());
@@ -133,6 +205,11 @@ public class Rapper implements Profileable {
 
     }
 
+    
+    /** 
+     * @param rapperHtml
+     * @throws IOException
+     */
     public void createProfileHtml(Rapper rapperHtml) throws IOException {
         System.out.println();
         System.out.println(
@@ -145,6 +222,11 @@ public class Rapper implements Profileable {
         System.out.println("Done! The profile will open in your default browser.");
     }
 
+    
+    /** 
+     * @param rapperHtml
+     * @throws IOException
+     */
     private void makeHtmlFile(Rapper rapperHtml) throws IOException {
         //TODO: make loweCamelCase ex "mcGeorgeWatsky.html
         File htmlTemplateFile = new File("HTML/" + rapperHtml.getStageName().toLowerCase() + ".html");
@@ -164,6 +246,11 @@ public class Rapper implements Profileable {
         profile.writeAndOpen();
     }
 
+    
+    /** 
+     * @param rapperHtml
+     * @throws IOException
+     */
     private void getCountryLanguage(Rapper rapperHtml) throws IOException {
         int responseCode;
         String url = "https://restcountries.eu/rest/v2/name/" + rapperHtml.getNationality(), withoutspaces = "",
@@ -203,27 +290,42 @@ public class Rapper implements Profileable {
                 rapperHtml.addIdiomas(arrayLanguages.get(i).getAsJsonObject().get("name").getAsString());
             }
             rapperHtml.setBandera(array.get(0).getAsJsonObject().get("flag").getAsString());
-            System.out.println();
         } else {
             System.out.println("Getting the information form the RESTapi is not working.");
         }
     }
 
+    
+    /** 
+     * @return String
+     */
     @Override
     public String getBirthdate() {
         return birth;
     }
 
+    
+    /** 
+     * @return String
+     */
     @Override
     public String getName() {
         return realName;
     }
 
+    
+    /** 
+     * @return String
+     */
     @Override
     public String getNickname() {
         return stageName;
     }
 
+    
+    /** 
+     * @return String
+     */
     @Override
     public String getPictureUrl() {
         return photo;

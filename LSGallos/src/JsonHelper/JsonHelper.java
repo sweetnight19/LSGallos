@@ -6,6 +6,7 @@ import Rapper.Rapper;
 import Themes.Theme;
 import com.google.gson.*;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -15,6 +16,12 @@ import java.util.ArrayList;
 public class JsonHelper {
     private static JsonElement element;
 
+    
+    /** 
+     * @param path
+     * @param rappers
+     * @throws IOException
+     */
     public static void importRappers(Path path, ArrayList<Rapper> rappers) throws IOException {
         Gson gson = new Gson();
         String json = Files.readString(path);
@@ -27,6 +34,12 @@ public class JsonHelper {
         System.out.println();
     }
 
+    
+    /** 
+     * @param path
+     * @param countries
+     * @throws IOException
+     */
     public static void importCountries(Path path, ArrayList<Countries> countries) throws IOException {
         String json = Files.readString(path);
         element = JsonParser.parseString(json);
@@ -38,6 +51,12 @@ public class JsonHelper {
 
     }
 
+    
+    /** 
+     * @param path
+     * @return Competicion
+     * @throws IOException
+     */
     public static Competicion importCompetition(Path path) throws IOException {
         Gson gson = new Gson();
         String json = Files.readString(path);
@@ -49,7 +68,12 @@ public class JsonHelper {
         return gson.fromJson(jsonObject, Competicion.class);
     }
 
-    public static void añadirRapero(Rapper rapper) throws IOException {
+    
+    /** 
+     * @param rapper
+     * @throws IOException
+     */
+    public static void anadirRapero(Rapper rapper) throws IOException {
         /*
          * Versio del Artur
          * 
@@ -70,26 +94,27 @@ public class JsonHelper {
          * Files.writeString(p, gson.toJson(json));
          */
 
-        /*
-         * Versio meva
-         * 
-         * Path p = Paths.get("JSON/competicio.json"); String json =
-         * Files.readString(p); element = JsonParser.parseString(json);
-         * 
-         * JsonObject object = new JsonObject();
-         * //object.getAsJsonArray("rappers").add(element);
-         * object.addProperty("realName", rapper.getRealName());
-         * object.addProperty("stageName", rapper.getStageName());
-         * object.addProperty("birth", rapper.getBirth());
-         * object.addProperty("nationality", rapper.getNationality());
-         * object.addProperty("level", rapper.getLevel()); object.addProperty("photo",
-         * rapper.getPhoto());
-         * 
-         * element.getAsJsonObject().getAsJsonArray("rappers").add(object.toString());
-         * Gson gson = new GsonBuilder().setPrettyPrinting().create(); FileWriter fw =
-         * new FileWriter("JSON/competicio.json"); fw.write(gson.toJson(element));
-         * fw.close();
-         */
+
+        //Versió meva
+
+          Path p = Paths.get("JSON/competicio.json"); String json =
+          Files.readString(p); element = JsonParser.parseString(json);
+
+          JsonObject object = new JsonObject();
+          //object.getAsJsonArray("rappers").add(element);
+          object.addProperty("realName", rapper.getRealName());
+          object.addProperty("stageName", rapper.getStageName());
+          object.addProperty("birth", rapper.getBirth());
+          object.addProperty("nationality", rapper.getNationality());
+          object.addProperty("level", rapper.getLevel()); object.addProperty("photo",
+          rapper.getPhoto());
+
+          element.getAsJsonObject().getAsJsonArray("rappers").add(object.toString());
+          Gson gson = new GsonBuilder().setPrettyPrinting().create();
+          FileWriter fw = new FileWriter("JSON/competicio.json");
+          fw.write(gson.toJson(element));
+          fw.close();
+
 
         /*
          * Versio del Pol
@@ -131,6 +156,11 @@ public class JsonHelper {
          */
     }
 
+    
+    /** 
+     * @param themList
+     * @throws IOException
+     */
     public static void importRhymes(ArrayList<Theme> themList) throws IOException {
         Path p = Paths.get("JSON/batalles.json");
         Gson gson = new Gson();

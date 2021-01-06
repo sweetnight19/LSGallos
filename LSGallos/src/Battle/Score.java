@@ -5,6 +5,10 @@ import java.util.Random;
 
 public class Score {
 
+    
+    /** 
+     * @return String
+     */
     public static String getType() {
         int type;
         Random random = new Random();
@@ -21,18 +25,39 @@ public class Score {
         }
     }
 
+    
+    /** 
+     * @param rhymes
+     * @return int
+     */
     private int scoreSangre(int rhymes) {
         return (int) (Math.PI * Math.pow(rhymes, 2)) / 4;
     }
 
+    
+    /** 
+     * @param rhymes
+     * @return int
+     */
     private int scoreAcapella(int rhymes) {
         return (int) (6 * Math.sqrt(rhymes) + 3) / 2;
     }
 
+    
+    /** 
+     * @param rhymes
+     * @return int
+     */
     private int scoreEscrita(int rhymes) {
         return (int) 1 + 3 * rhymes;
     }
 
+    
+    /** 
+     * @param rima
+     * @param type
+     * @return int
+     */
     public int countRhymes(String rima, String type) {
         int count;
         String paragref = "12";
@@ -41,7 +66,6 @@ public class Score {
 
         count = 0;
 
-        // Aqui el codi
         for (int i = 0; rima.charAt(i) != '.'; i++) {
             if (rima.charAt(i) == ',') {
                 // paragref.replace(paragref.charAt(0), rima.charAt(i - 3));

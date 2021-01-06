@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"Battle"},{"l":"Competicion"},{"l":"Controller"},{"l":"Countries"},{"l":"JsonHelper"},{"l":"Rapper"},{"l":"Themes"}];updateSearchResults();

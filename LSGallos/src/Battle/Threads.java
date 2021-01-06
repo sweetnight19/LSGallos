@@ -64,10 +64,18 @@ public class Threads implements Runnable {
 
     }
 
+    
+    /** 
+     * @return Rapper
+     */
     public Rapper getRapero1() {
         return rapper1;
     }
 
+    
+    /** 
+     * @return Rapper
+     */
     public Rapper getRapero2() {
         return rapper2;
     }

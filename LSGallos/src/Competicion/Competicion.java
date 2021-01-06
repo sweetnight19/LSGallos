@@ -1,13 +1,13 @@
 package Competicion;
 
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.Scanner;
-
 import Battle.Score;
 import Battle.Threads;
 import Rapper.Rapper;
 import Themes.Theme;
+
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.Scanner;
 
 public class Competicion {
     private String name;
@@ -24,38 +24,78 @@ public class Competicion {
         setFinish(false);
     }
 
+    
+    /** 
+     * @return boolean
+     */
     public boolean isFinish() {
         return finish;
     }
 
+    
+    /** 
+     * @param finish
+     */
     public void setFinish(boolean finish) {
         this.finish = finish;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getName() {
         return name;
     }
 
+    
+    /** 
+     * @return int
+     */
     public int getStatus() {
         return status;
     }
 
+    
+    /** 
+     * @param status
+     */
     public void setStatus(int status) {
         this.status = status;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getStartDate() {
         return startDate;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getEndDate() {
         return endDate;
     }
 
+    
+    /** 
+     * @return int
+     */
     public int getPhasesCount() {
         return phases.size();
     }
 
+    
+    /** 
+     * @param rapper
+     * @param themList
+     * @param type
+     * @param contrincant
+     * @param name
+     */
     public void batallaInicial(ArrayList<Rapper> rapper, ArrayList<Theme> themList, String type, int contrincant,
             String name) {
         Random random = new Random();
@@ -157,6 +197,14 @@ public class Competicion {
         System.out.println();
     }
 
+    
+    /** 
+     * @param rapper
+     * @param name
+     * @param contricant
+     * @param themList
+     * @param type
+     */
     public void getFase(ArrayList<Rapper> rapper, String name, int contricant, ArrayList<Theme> themList, String type) {
         int usuario, aux;
         Random random = new Random();
@@ -204,6 +252,11 @@ public class Competicion {
         }
     }
 
+    
+    /** 
+     * @param rapper
+     * @return ArrayList<Rapper>
+     */
     public ArrayList<Rapper> getResult(ArrayList<Rapper> rapper) {
         Rapper rapero1, rapero2;
         for (int i = 0; i < threads.size(); i++) {
@@ -227,6 +280,12 @@ public class Competicion {
         return rapper;
     }
 
+    
+    /** 
+     * @param rapper
+     * @param countPhases
+     * @param status
+     */
     public static void eliminarRaperos(ArrayList<Rapper> rapper, int countPhases, int status) {
         // Ultima fase
         if ((countPhases == 2 && status == 2) || (countPhases == 3 && status == 3)) {

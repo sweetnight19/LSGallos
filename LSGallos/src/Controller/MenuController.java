@@ -1,22 +1,21 @@
 package Controller;
 
-import java.io.IOException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.Scanner;
-
 import Battle.Score;
-import java.text.SimpleDateFormat;
-import java.text.ParseException;
-import java.util.Random;
-
 import Competicion.Competicion;
 import Countries.Countries;
 import JsonHelper.JsonHelper;
 import Rapper.Rapper;
 import Themes.Theme;
+
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.InputMismatchException;
+import java.util.Random;
+import java.util.Scanner;
 
 public class MenuController {
     private int opcio;
@@ -27,6 +26,14 @@ public class MenuController {
         this.scanner = new Scanner(System.in);
     }
 
+    
+    /** 
+     * @param competicion
+     * @param countries
+     * @param rapper
+     * @throws IOException
+     * @throws ParseException
+     */
     public void executaMenu(Competicion competicion, ArrayList<Countries> countries, ArrayList<Rapper> rapper)
             throws IOException, ParseException {
         LocalDate date = LocalDate.now();
@@ -46,6 +53,13 @@ public class MenuController {
         }
     }
 
+    
+    /** 
+     * @param rapper
+     * @param countries
+     * @throws IOException
+     * @throws ParseException
+     */
     private void MenuRegistro(ArrayList<Rapper> rapper, ArrayList<Countries> countries)
             throws IOException, ParseException {
 
@@ -73,6 +87,12 @@ public class MenuController {
 
     }
 
+    
+    /** 
+     * @param competicion
+     * @param rapper
+     * @throws IOException
+     */
     private void MenuLogin(Competicion competicion, ArrayList<Rapper> rapper) throws IOException {
         int flagStageName;
         String name;
@@ -124,6 +144,13 @@ public class MenuController {
         }
     }
 
+    
+    /** 
+     * @param rapper
+     * @param countries
+     * @throws IOException
+     * @throws ParseException
+     */
     private void Login(ArrayList<Rapper> rapper, ArrayList<Countries> countries) throws IOException, ParseException {
         String realName;
         String stageName;
@@ -156,6 +183,19 @@ public class MenuController {
 
     }
 
+    
+    /** 
+     * @param realName
+     * @param stageName
+     * @param birth
+     * @param nationality
+     * @param level
+     * @param photo
+     * @param rapper
+     * @param countries
+     * @throws IOException
+     * @throws ParseException
+     */
     private void checkInfo(String realName, String stageName, String birth, String nationality, int level, String photo,
             ArrayList<Rapper> rapper, ArrayList<Countries> countries) throws IOException, ParseException {
 
@@ -202,11 +242,16 @@ public class MenuController {
             System.out.println("Registration complete!");
 
             // TODO: Falta acabar de implementar la escritura
-            // JsonHelper.añadirRapero(rapper2);
+            // JsonHelper.anadirRapero(rapper2);
         }
 
     }
 
+    
+    /** 
+     * @param level
+     * @return boolean
+     */
     private boolean checkLevel(int level) {
         if (level == 1 || level == 2) {
             return true;
@@ -216,6 +261,12 @@ public class MenuController {
         }
     }
 
+    
+    /** 
+     * @param birth
+     * @return boolean
+     * @throws ParseException
+     */
     private boolean checkBirthFormat(String birth) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 
@@ -230,6 +281,12 @@ public class MenuController {
         }
     }
 
+    
+    /** 
+     * @param countries
+     * @param nationality
+     * @return int
+     */
     private int checkCountry(ArrayList<Countries> countries, String nationality) {
         for (int i = 0; i < countries.size(); i++) {
             if (countries.get(i).getName().equals(nationality)) {
@@ -285,6 +342,14 @@ public class MenuController {
      * true; } else { return false; } } } } return false; }
      */
 
+
+    
+    /** 
+     * @param competicion
+     * @param name
+     * @param rapper
+     * @throws IOException
+     */
     private void Dashboard(Competicion competicion, String name, ArrayList<Rapper> rapper) throws IOException {
 
         Random random = new Random();

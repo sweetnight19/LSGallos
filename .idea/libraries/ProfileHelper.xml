@@ -1,7 +1,7 @@
 <component name="libraryTable">
-  <library name="LSGallos">
+  <library name="ProfileHelper">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/LSGallos.jar!/" />
+      <root url="jar://$USER_HOME$/Downloads/ProfileHelper.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
