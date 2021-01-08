@@ -9,11 +9,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 
 public class App {
-    
-    /** 
-     * @param args
-     * @throws Exception
-     */
+
     public static void main(String[] args) throws Exception {
         ArrayList<Rapper> rapper = new ArrayList<>();
         ArrayList<Countries> countries = new ArrayList<>();

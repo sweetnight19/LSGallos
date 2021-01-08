@@ -1,15 +1,14 @@
 package Countries;
 
 public class Countries {
-    private String name;
+    private final String name;
 
     public Countries(String name) {
         this.name = name;
     }
 
-    
-    /** 
-     * @return String
+    /**
+     * @return (String) Devuelve el nombre del país
      */
     public String getName() {
         return name;

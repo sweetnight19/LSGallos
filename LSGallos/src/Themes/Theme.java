@@ -3,29 +3,32 @@ package Themes;
 import java.util.ArrayList;
 
 public class Theme {
-    private String name;
-    private ArrayList<Rhymes> rhymes;
+    private final String name;
+    private final ArrayList<Rhymes> rhymes;
 
-    
-    /** 
-     * @return String
+    public Theme(String name, ArrayList<Rhymes> rhymes) {
+        this.name = name;
+        this.rhymes = rhymes;
+    }
+
+    /**
+     * @return (String) Devuelve el nombre del tema
      */
     public String getName() {
         return name;
     }
 
-    
-    /** 
-     * @param level
-     * @param turno
-     * @return String
+    /**
+     * @param level (int) Nivel del rapero
+     * @param turno (int) Turno 0 o 1 de la batalla
+     * @return (String) Devuelve la rima segun el nivel y el turno de la batalla
      */
-    public String getRhymes(int level,int turno) {
-        if (level==0) {
+    public String getRhymes(int level, int turno) {
+        if (level == 0) {
             return rhymes.get(level).getNivell1(turno);
         } else {
             return rhymes.get(level).getNivell2(turno);
         }
-        
+
     }
 }

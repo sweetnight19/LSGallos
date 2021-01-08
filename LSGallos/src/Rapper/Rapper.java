@@ -25,7 +25,7 @@ public class Rapper implements Profileable {
     private int score;
     private boolean winner;
     private String bandera;
-    private ArrayList<String> idiomas = new ArrayList<String>();
+    private final ArrayList<String> idiomas = new ArrayList<>();
 
     public Rapper(String realName, String stageName, String birth2, String nationality, int level, String photo) {
         this.realName = realName;
@@ -38,151 +38,128 @@ public class Rapper implements Profileable {
         winner = false;
     }
 
-    
-    /** 
-     * @return ArrayList<String>
+    public Rapper() {
+        winner = false;
+    }
+
+    /**
+     * @return (ArrayList<String>) Devuelve el conjunto de idiomas del pais
+     *         correspondiente al rapero
      */
     public ArrayList<String> getIdiomas() {
         return idiomas;
     }
 
-    
-    /** 
-     * @param idioma
+    /**
+     * @param idioma (String) añade un idioma nuevo a ese rapero
      */
     private void addIdiomas(String idioma) {
         idiomas.add(idioma);
     }
 
-    public Rapper() {
-        winner = false;
-    }
-
-    
-    /** 
-     * @return String
+    /**
+     * @return (String) Devuelve el url de la foto del rapero
      */
     public String getPhoto() {
         return photo;
     }
 
-    
-    /** 
-     * @return int
+    /**
+     * @return (int) Devuelve el nivel del rapero
      */
     public int getLevel() {
         return level;
     }
 
-    
-    /** 
-     * @return String
+    /**
+     * @return (String) Devuelve el url correspondiente a la bandera del rapero
      */
     public String getBandera() {
         return bandera;
     }
 
-    
-    /** 
-     * @param flag
+    /**
+     * @param flag (String) Se indica el url de la bandera para el usuario
      */
     private void setBandera(String flag) {
         bandera = flag;
     }
 
-    
-    /** 
-     * @param level
+    /**
+     * @param level (int) Se indica el nivel del rapero
      */
     public void setLevel(int level) {
         this.level = level;
     }
 
-    
-    /** 
-     * @return String
+    /**
+     * @return (String) Devuelve el pais de origen del rapero
      */
     public String getNationality() {
         return nationality;
     }
 
-    
-    /** 
-     * @return String
+    /**
+     * @return (String) Devuelve la fecha de nacimiento
      */
     public String getBirth() {
         return birth;
     }
 
-    
-    /** 
-     * @return String
+    /**
+     * @return (String) Devuelve el nombre real del rapero
      */
     public String getRealName() {
         return realName;
     }
 
-    
-    /** 
-     * @param rapper
-     * @return int
+    /**
+     * @param rapper ArrayList<Rapper>) Estructura de tipo ArraList<> donde estan
+     *               los raperos
+     * @return (int) Devuelve el número del identicador dentro del ArrayList de
+     *         raperos
      */
     public int getWinner(ArrayList<Rapper> rapper) {
         for (int i = 0; i < rapper.size(); i++) {
-            if (rapper.get(i).winner == true) {
+            if (rapper.get(i).winner) {
                 return i;
             }
         }
         return 0;
     }
 
-    
-    /** 
-     * @param winner
+    /**
+     * @param winner (boolean) Para indicar quien es el ganador
      */
     public void setWinner(boolean winner) {
         this.winner = winner;
     }
 
-    
-    /** 
-     * @return int
+    /**
+     * @return (int) Devuelve la puntuacion del rapero
      */
     public int getScore() {
         return score;
     }
 
-    
-    /** 
-     * @return String
-     */
-    public String getScoreHtml() {
-        return "" + score;
-    }
-
-    
-    /** 
-     * @param score
+    /**
+     * @param score (int) Para añadir la puntuación nueva al rapero
      */
     public void setScore(int score) {
         this.score += score;
     }
 
-    
-    /** 
-     * @return String
+    /**
+     * @return (String) Devuelve el nombre artístico del rapero
      */
     public String getStageName() {
         return stageName;
     }
 
-    
-    /** 
-     * @param rapper
+    /**
+     * @param rapper (ArrayList<Rapper>) Conjunto de raperos para mostrar el ranking
      */
     public static void mostrarRanking(ArrayList<Rapper> rapper) {
-        // Collections.sort(rapper, Collections.reverseOrder());
-        // rapper.sort((o1, o2) -> Float.compare(o2.getScore(), o1.getScore()));
         ordenaRappers(rapper);
 
         System.out.println("------------------------------------");
@@ -194,9 +171,8 @@ public class Rapper implements Profileable {
         }
     }
 
-    
-    /** 
-     * @param rapper
+    /**
+     * @param rapper (ArrayList<Rapper>) Conjunto de raperos para ordenar
      */
     public static void ordenaRappers(ArrayList<Rapper> rapper) {
 
@@ -205,9 +181,8 @@ public class Rapper implements Profileable {
 
     }
 
-    
-    /** 
-     * @param rapperHtml
+    /**
+     * @param rapperHtml (Rapper) Rapero indicado para generar su perfil en Html
      * @throws IOException
      */
     public void createProfileHtml(Rapper rapperHtml) throws IOException {
@@ -222,13 +197,12 @@ public class Rapper implements Profileable {
         System.out.println("Done! The profile will open in your default browser.");
     }
 
-    
-    /** 
-     * @param rapperHtml
+    /**
+     * @param rapperHtml (Rapper) Rapero indicado para generar su perfil en Html
      * @throws IOException
      */
     private void makeHtmlFile(Rapper rapperHtml) throws IOException {
-        //TODO: make loweCamelCase ex "mcGeorgeWatsky.html
+        // TODO: make loweCamelCase ex "mcGeorgeWatsky.html
         File htmlTemplateFile = new File("HTML/" + rapperHtml.getStageName().toLowerCase() + ".html");
         ProfileFactory factory = new ProfileFactory();
         Profile profile;
@@ -239,25 +213,26 @@ public class Rapper implements Profileable {
         for (int i = 0; i < rapperHtml.getIdiomas().size(); i++) {
             profile.addLanguage(rapperHtml.getIdiomas().get(i));
         }
-        profile.addExtra("Points", rapperHtml.getScoreHtml());
-        if (rapperHtml.winner == true) {
+        profile.addExtra("Points", "" + rapperHtml.getScore());
+        if (rapperHtml.winner) {
             profile.addExtra("Position", "Winner!");
         }
         profile.writeAndOpen();
     }
 
-    
-    /** 
-     * @param rapperHtml
+    /**
+     * @param rapperHtml (Rapper) Rapero indicado para generar su perfil en Html
      * @throws IOException
      */
     private void getCountryLanguage(Rapper rapperHtml) throws IOException {
         int responseCode;
-        String url = "https://restcountries.eu/rest/v2/name/" + rapperHtml.getNationality(), withoutspaces = "",
-                replace = "%20", data;
+        String url = "https://restcountries.eu/rest/v2/name/" + rapperHtml.getNationality();
+        StringBuilder withoutspaces = new StringBuilder();
+        String replace = "%20";
+        String data;
         StringBuffer response;
         URL urlRequest = new URL(url);
-        String readLine = null;
+        String readLine;
         HttpURLConnection connection;
         BufferedReader in;
         JsonElement element;
@@ -265,9 +240,9 @@ public class Rapper implements Profileable {
 
         for (int i = 0; i < url.length(); i++) {
             if (url.charAt(i) != ' ') {
-                withoutspaces += url.charAt(i);
+                withoutspaces.append(url.charAt(i));
             } else {
-                withoutspaces += replace;
+                withoutspaces.append(replace);
             }
         }
 
@@ -295,36 +270,32 @@ public class Rapper implements Profileable {
         }
     }
 
-    
-    /** 
-     * @return String
+    /**
+     * @return (String) Devuelve la fecha de nacimiento
      */
     @Override
     public String getBirthdate() {
         return birth;
     }
 
-    
-    /** 
-     * @return String
+    /**
+     * @return (String) Devuelve el nombre real
      */
     @Override
     public String getName() {
         return realName;
     }
 
-    
-    /** 
-     * @return String
+    /**
+     * @return (String) Devuelve el nombre artistico
      */
     @Override
     public String getNickname() {
         return stageName;
     }
 
-    
-    /** 
-     * @return String
+    /**
+     * @return (String) Devuelve el url de la foto de perfil del rapero
      */
     @Override
     public String getPictureUrl() {

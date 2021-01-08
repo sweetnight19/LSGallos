@@ -16,10 +16,11 @@ import java.util.ArrayList;
 public class JsonHelper {
     private static JsonElement element;
 
-    
-    /** 
-     * @param path
-     * @param rappers
+    /**
+     * @param path    (Path) Direccion de donde se encuentra el fichero JSON con los
+     *                raperos
+     * @param rappers (ArrayList<Rapper>) Estructura de tipo ArraList<> donde se
+     *                almacenaran los raperos
      * @throws IOException
      */
     public static void importRappers(Path path, ArrayList<Rapper> rappers) throws IOException {
@@ -34,10 +35,11 @@ public class JsonHelper {
         System.out.println();
     }
 
-    
-    /** 
-     * @param path
-     * @param countries
+    /**
+     * @param path      (Path) Direccion de donde se encuentra el fichero JSON con
+     *                  los paises
+     * @param countries (ArrayList<Rapper>) Estructura de tipo ArraList<> donde se
+     *                  almacenaran los paises
      * @throws IOException
      */
     public static void importCountries(Path path, ArrayList<Countries> countries) throws IOException {
@@ -51,10 +53,11 @@ public class JsonHelper {
 
     }
 
-    
-    /** 
-     * @param path
-     * @return Competicion
+    /**
+     * @param path (Path) Direccion de donde se encuentra el fichero JSON con los
+     *             datos de la competicion
+     * @return (Competicion) Devuelve una estructura de clase Competicion con todos
+     *         los datos
      * @throws IOException
      */
     public static Competicion importCompetition(Path path) throws IOException {
@@ -68,9 +71,9 @@ public class JsonHelper {
         return gson.fromJson(jsonObject, Competicion.class);
     }
 
-    
-    /** 
-     * @param rapper
+    /**
+     * @param rapper (Rapper) rapero nuevo que se acaba de registrar y interesa
+     *               añadirlo en el fichero JSON
      * @throws IOException
      */
     public static void anadirRapero(Rapper rapper) throws IOException {
@@ -94,27 +97,26 @@ public class JsonHelper {
          * Files.writeString(p, gson.toJson(json));
          */
 
+        // Versió meva
 
-        //Versió meva
+        Path p = Paths.get("JSON/competicio.json");
+        String json = Files.readString(p);
+        element = JsonParser.parseString(json);
 
-          Path p = Paths.get("JSON/competicio.json"); String json =
-          Files.readString(p); element = JsonParser.parseString(json);
+        JsonObject object = new JsonObject();
+        // object.getAsJsonArray("rappers").add(element);
+        object.addProperty("realName", rapper.getRealName());
+        object.addProperty("stageName", rapper.getStageName());
+        object.addProperty("birth", rapper.getBirth());
+        object.addProperty("nationality", rapper.getNationality());
+        object.addProperty("level", rapper.getLevel());
+        object.addProperty("photo", rapper.getPhoto());
 
-          JsonObject object = new JsonObject();
-          //object.getAsJsonArray("rappers").add(element);
-          object.addProperty("realName", rapper.getRealName());
-          object.addProperty("stageName", rapper.getStageName());
-          object.addProperty("birth", rapper.getBirth());
-          object.addProperty("nationality", rapper.getNationality());
-          object.addProperty("level", rapper.getLevel()); object.addProperty("photo",
-          rapper.getPhoto());
-
-          element.getAsJsonObject().getAsJsonArray("rappers").add(object.toString());
-          Gson gson = new GsonBuilder().setPrettyPrinting().create();
-          FileWriter fw = new FileWriter("JSON/competicio.json");
-          fw.write(gson.toJson(element));
-          fw.close();
-
+        element.getAsJsonObject().getAsJsonArray("rappers").add(object.toString());
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        FileWriter fw = new FileWriter("JSON/competicio.json");
+        fw.write(gson.toJson(element));
+        fw.close();
 
         /*
          * Versio del Pol
@@ -156,9 +158,9 @@ public class JsonHelper {
          */
     }
 
-    
-    /** 
-     * @param themList
+    /**
+     * @param themList (ArrayList<Theme>) Estructura de tipo ArrayList<> donde se
+     *                 almacenaran los temas
      * @throws IOException
      */
     public static void importRhymes(ArrayList<Theme> themList) throws IOException {

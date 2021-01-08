@@ -1,15 +1,16 @@
 package Battle;
 
-import java.util.ArrayList;
-import java.util.Random;
 import Rapper.Rapper;
 import Themes.Theme;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 public class Threads implements Runnable {
-    private Rapper rapper1;
-    private Rapper rapper2;
-    private ArrayList<Theme> themes;
-    private String type;
+    private final Rapper rapper1;
+    private final Rapper rapper2;
+    private final ArrayList<Theme> themes;
+    private final String type;
 
     public Threads(Rapper rapper1, Rapper rapper2, ArrayList<Theme> themes, String type) {
         this.rapper1 = rapper1;
@@ -34,28 +35,28 @@ public class Threads implements Runnable {
         try {
             rima = themes.get(topic).getRhymes(rapper1.getLevel() - 1, 0);
             puntuacio1 += score.countRhymes(rima, type);
-        } catch (IndexOutOfBoundsException e) {
+        } catch (IndexOutOfBoundsException ignored) {
         }
 
         // 2
         try {
             rima = themes.get(topic).getRhymes(rapper2.getLevel() - 1, 0);
             puntuacio2 += score.countRhymes(rima, type);
-        } catch (IndexOutOfBoundsException e) {
+        } catch (IndexOutOfBoundsException ignored) {
         }
 
         // 3
         try {
             rima = themes.get(topic).getRhymes(rapper1.getLevel() - 1, 0);
             puntuacio1 += score.countRhymes(rima, type);
-        } catch (IndexOutOfBoundsException e) {
+        } catch (IndexOutOfBoundsException ignored) {
         }
 
         // 4
         try {
             rima = themes.get(topic).getRhymes(rapper2.getLevel() - 1, 0);
             puntuacio2 += score.countRhymes(rima, type);
-        } catch (IndexOutOfBoundsException e) {
+        } catch (IndexOutOfBoundsException ignored) {
         }
 
         // Actualizamos la puntuacion
@@ -64,17 +65,15 @@ public class Threads implements Runnable {
 
     }
 
-    
-    /** 
-     * @return Rapper
+    /**
+     * @return (Rapper) Vuelve el rapero1
      */
     public Rapper getRapero1() {
         return rapper1;
     }
 
-    
-    /** 
-     * @return Rapper
+    /**
+     * @return (Rapper) Vuelve el rapero2
      */
     public Rapper getRapero2() {
         return rapper2;
