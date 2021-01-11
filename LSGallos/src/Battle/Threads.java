@@ -6,7 +6,7 @@ import Themes.Theme;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Threads implements Runnable {
+public class Threads extends Thread {
     private final Rapper rapper1;
     private final Rapper rapper2;
     private final ArrayList<Theme> themes;
@@ -21,7 +21,6 @@ public class Threads implements Runnable {
 
     @Override
     public void run() {
-        // TODO: check score
         Random random = new Random();
         int topic, puntuacio1, puntuacio2;
         String rima;

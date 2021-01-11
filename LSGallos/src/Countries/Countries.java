@@ -8,7 +8,7 @@ public class Countries {
     }
 
     /**
-     * @return (String) Devuelve el nombre del país
+     * @return (String) Devuelve el nombre del pais
      */
     public String getName() {
         return name;

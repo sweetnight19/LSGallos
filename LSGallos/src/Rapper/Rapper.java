@@ -22,7 +22,7 @@ public class Rapper implements Profileable {
     private String nationality;
     private int level;
     private String photo;
-    private int score;
+    private double score;
     private boolean winner;
     private String bandera;
     private final ArrayList<String> idiomas = new ArrayList<>();
@@ -34,7 +34,7 @@ public class Rapper implements Profileable {
         this.nationality = nationality;
         this.level = level;
         this.photo = photo;
-        score = 0;
+        score = 0.0;
         winner = false;
     }
 
@@ -43,15 +43,15 @@ public class Rapper implements Profileable {
     }
 
     /**
-     * @return (ArrayList<String>) Devuelve el conjunto de idiomas del pais
-     *         correspondiente al rapero
+     * @return (ArrayList < String >) Devuelve el conjunto de idiomas del pais
+     * correspondiente al rapero
      */
     public ArrayList<String> getIdiomas() {
         return idiomas;
     }
 
     /**
-     * @param idioma (String) añade un idioma nuevo a ese rapero
+     * @param idioma (String) anade un idioma nuevo a ese rapero
      */
     private void addIdiomas(String idioma) {
         idiomas.add(idioma);
@@ -116,8 +116,8 @@ public class Rapper implements Profileable {
     /**
      * @param rapper ArrayList<Rapper>) Estructura de tipo ArraList<> donde estan
      *               los raperos
-     * @return (int) Devuelve el número del identicador dentro del ArrayList de
-     *         raperos
+     * @return (int) Devuelve el numero del identicador dentro del ArrayList de
+     * raperos
      */
     public int getWinner(ArrayList<Rapper> rapper) {
         for (int i = 0; i < rapper.size(); i++) {
@@ -138,19 +138,19 @@ public class Rapper implements Profileable {
     /**
      * @return (int) Devuelve la puntuacion del rapero
      */
-    public int getScore() {
+    public double getScore() {
         return score;
     }
 
     /**
-     * @param score (int) Para añadir la puntuación nueva al rapero
+     * @param score (int) Para anadir la puntuacion nueva al rapero
      */
-    public void setScore(int score) {
+    public void setScore(double score) {
         this.score += score;
     }
 
     /**
-     * @return (String) Devuelve el nombre artístico del rapero
+     * @return (String) Devuelve el nombre artistico del rapero
      */
     public String getStageName() {
         return stageName;
@@ -159,7 +159,7 @@ public class Rapper implements Profileable {
     /**
      * @param rapper (ArrayList<Rapper>) Conjunto de raperos para mostrar el ranking
      */
-    public static void mostrarRanking(ArrayList<Rapper> rapper) {
+    public static void mostrarRanking(ArrayList<Rapper> rapper, String name) {
         ordenaRappers(rapper);
 
         System.out.println("------------------------------------");
@@ -167,7 +167,27 @@ public class Rapper implements Profileable {
         System.out.println("------------------------------------");
 
         for (int i = 0; i < rapper.size(); i++) {
-            System.out.println("  " + (i + 1) + "\t" + rapper.get(i).stageName + "   " + "\t\t" + rapper.get(i).score);
+            if (i < 9) {
+                if (rapper.get(i).getStageName().equals(name)) {
+                    System.out.println("  " + (i + 1) + "\t\t" + rapper.get(i).stageName + " <-(You)  " + "\t\t"
+                            + (int) rapper.get(i).score);
+
+                } else {
+                    System.out.println("  " + (i + 1) + "\t\t" + rapper.get(i).stageName + "   " + "\t\t"
+                            + (int) rapper.get(i).score);
+                }
+            } else {
+                if (rapper.get(i).getStageName().equals(name)) {
+                    System.out.println("  " + (i + 1) + "\t" + rapper.get(i).stageName + " <-(You)  " + "\t\t"
+                            + (int) rapper.get(i).score);
+                } else {
+                    System.out.println("  " + (i + 1) + "\t" + rapper.get(i).stageName + "   " + "\t\t"
+                            + (int) rapper.get(i).score);
+                }
+
+            }
+            System.out.println("------------------------------------");
+
         }
     }
 
@@ -177,13 +197,12 @@ public class Rapper implements Profileable {
     public static void ordenaRappers(ArrayList<Rapper> rapper) {
 
         // Collections.sort(rapper, Collections.reverseOrder());
-        rapper.sort((o1, o2) -> Float.compare(o2.getScore(), o1.getScore()));
+        rapper.sort((o1, o2) -> Double.compare(o2.getScore(), o1.getScore()));
 
     }
 
     /**
      * @param rapperHtml (Rapper) Rapero indicado para generar su perfil en Html
-     * @throws IOException
      */
     public void createProfileHtml(Rapper rapperHtml) throws IOException {
         System.out.println();
@@ -199,7 +218,6 @@ public class Rapper implements Profileable {
 
     /**
      * @param rapperHtml (Rapper) Rapero indicado para generar su perfil en Html
-     * @throws IOException
      */
     private void makeHtmlFile(Rapper rapperHtml) throws IOException {
         // TODO: make loweCamelCase ex "mcGeorgeWatsky.html
@@ -213,7 +231,7 @@ public class Rapper implements Profileable {
         for (int i = 0; i < rapperHtml.getIdiomas().size(); i++) {
             profile.addLanguage(rapperHtml.getIdiomas().get(i));
         }
-        profile.addExtra("Points", "" + rapperHtml.getScore());
+        profile.addExtra("Points", "" + (int)rapperHtml.getScore());
         if (rapperHtml.winner) {
             profile.addExtra("Position", "Winner!");
         }
@@ -222,29 +240,17 @@ public class Rapper implements Profileable {
 
     /**
      * @param rapperHtml (Rapper) Rapero indicado para generar su perfil en Html
-     * @throws IOException
      */
     private void getCountryLanguage(Rapper rapperHtml) throws IOException {
         int responseCode;
-        String url = "https://restcountries.eu/rest/v2/name/" + rapperHtml.getNationality();
-        StringBuilder withoutspaces = new StringBuilder();
-        String replace = "%20";
-        String data;
+        String url = "https://restcountries.eu/rest/v2/name/" + rapperHtml.getNationality(), data, readLine;
         StringBuffer response;
         URL urlRequest = new URL(url);
-        String readLine;
         HttpURLConnection connection;
         BufferedReader in;
         JsonElement element;
         JsonArray array, arrayLanguages;
 
-        for (int i = 0; i < url.length(); i++) {
-            if (url.charAt(i) != ' ') {
-                withoutspaces.append(url.charAt(i));
-            } else {
-                withoutspaces.append(replace);
-            }
-        }
 
         connection = (HttpURLConnection) urlRequest.openConnection();
         connection.setRequestMethod("GET");
@@ -266,7 +272,7 @@ public class Rapper implements Profileable {
             }
             rapperHtml.setBandera(array.get(0).getAsJsonObject().get("flag").getAsString());
         } else {
-            System.out.println("Getting the information form the RESTapi is not working.");
+            System.out.println("ERROR with the REST API");
         }
     }
 

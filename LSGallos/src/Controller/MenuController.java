@@ -27,15 +27,13 @@ public class MenuController {
     }
 
     /**
-     * @param competicion (Competicion) Estructura de datos de la competicions
+     * @param competicion (Competicion) Estructura de datos de la competicion
      * @param countries   (ArrayList<Countries>) Conjunto de paises leidos
      *                    previamente en el JSON
      * @param rapper      (ArrayList<Rapper>) Conjunto de raperos
-     * @throws IOException
-     * @throws ParseException
      */
     public void executaMenu(Competicion competicion, ArrayList<Countries> countries, ArrayList<Rapper> rapper)
-            throws IOException, ParseException {
+            throws IOException {
         LocalDate date = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -47,7 +45,7 @@ public class MenuController {
         System.out.println("Currently there are " + rapper.size() + " participants");
         System.out.println();
         if (date.format(formatter).compareTo(competicion.getStartDate()) <= 0) {
-            MenuRegistro(rapper, countries);
+            MenuRegistro(rapper, countries, competicion);
         } else {
             MenuLogin(competicion, rapper);
         }
@@ -55,10 +53,11 @@ public class MenuController {
 
     /**
      * @param rapper    (ArrayList<Rapper>) Conjunto de raperos
-     * @param countries (Competicion) Estructura de datos de la competicions
-     * @throws ParseException
+     * @param countries (Competicion) Estructura de datos de la competicion
+     * @throws IOException
      */
-    private void MenuRegistro(ArrayList<Rapper> rapper, ArrayList<Countries> countries) throws ParseException {
+    private void MenuRegistro(ArrayList<Rapper> rapper, ArrayList<Countries> countries, Competicion competicion)
+            throws IOException {
 
         System.out.println("The competition hasn't started yet. Do you want to:");
         System.out.println();
@@ -81,7 +80,6 @@ public class MenuController {
                 opcio = scanner.nextInt();
             }
         }
-
     }
 
     /**
@@ -144,9 +142,8 @@ public class MenuController {
      * @param rapper    (ArrayList<Rapper>) Conjunto de raperos
      * @param countries (ArrayList<Countries>) Conjunto de paises leidos previamente
      *                  en el JSON
-     * @throws ParseException
      */
-    private void Login(ArrayList<Rapper> rapper, ArrayList<Countries> countries) throws ParseException {
+    private void Login(ArrayList<Rapper> rapper, ArrayList<Countries> countries) throws IOException {
         String realName;
         String stageName;
         String birth;
@@ -180,7 +177,7 @@ public class MenuController {
 
     /**
      * @param realName    (String) Nombre real del nuevo usuario
-     * @param stageName   (String) Nombre artístico del nuevo usuario
+     * @param stageName   (String) Nombre artistico del nuevo usuario
      * @param birth       (String) Fecha de nacimiento del nuevo usuario
      * @param nationality (String) Nacionalidad del nuevo usuario
      * @param level       (int) Nivel del nuevo usuario
@@ -188,10 +185,9 @@ public class MenuController {
      * @param rapper      (ArrayList<Rapper>) Conjunto de raperos
      * @param countries   (ArrayList<Countries>) Conjunto de paises leidos
      *                    previamente en el JSON
-     * @throws ParseException
      */
     private void checkInfo(String realName, String stageName, String birth, String nationality, int level, String photo,
-            ArrayList<Rapper> rapper, ArrayList<Countries> countries) throws ParseException {
+            ArrayList<Rapper> rapper, ArrayList<Countries> countries) throws IOException {
 
         int flagStageName = 0;
         int flagCountries;
@@ -215,11 +211,6 @@ public class MenuController {
         // Comprobamos que la fecha introducida tiene el formato correcto
         valid = checkBirthFormat(birth);
 
-        /*
-         * if (valid) { // Comprobamos que la fecha introducida és correcta // valid =
-         * checkBirth(birth); }
-         */
-
         // Comprobamos si el pais existe
         flagCountries = checkCountry(countries, nationality);
 
@@ -236,8 +227,7 @@ public class MenuController {
             rapper.add(rapper2);
             System.out.println("Registration complete!");
 
-            // TODO: Falta acabar de implementar la escritura
-            // JsonHelper.anadirRapero(rapper2);
+            JsonHelper.anadirRapero(rapper2);
         }
 
     }
@@ -291,61 +281,17 @@ public class MenuController {
         return 0;
     }
 
-    /*
-     * private boolean checkBirth(String birth) { // FICAR ELS RETURN QUAN ARRIBI AL
-     * FINAL DEL CODIG
-     *
-     * int date = 0; int month = 0; int year = 0;
-     *
-     * String cdate; String cmonth; String cyear;
-     *
-     * boolean leap = false; // leap == bisiesto
-     *
-     * int x = 0;
-     *
-     * // PASANT LES DATES A VARIABLES INDIVIDUALS PER MES ENDAVANT FER LA
-     * COMPROBACIÓ
-     *
-     * for (int i = 0; i < birth.length(); i++) { if (birth.charAt(i) != '-') { if
-     * (i < 2) { // cdate.charAt(x) = birth.charAt(i); } else { x = 0; if (i < 5) {
-     * // cmonth.charAt(x) = birth.charAt(i); } else { // cyear.charAt(x) =
-     * birth.charAt(i); } } } }
-     *
-     * // date = Integer.parseInt(cdate); // month = Integer.parseInt(cmonth); //
-     * year = Integer.parseInt(cyear);
-     *
-     * // CHECK ANY DE TRASPAS
-     *
-     * // ANY DIVIDIBLE PER 4 if (year % 4 == 0) {
-     *
-     * // ANY DIVIDIBLE PER 100 if (year % 100 == 0) {
-     *
-     * // ANY DIVIDIBLE PER 400 if (year % 400 == 0) { leap = true; // ANY DE
-     * TRASPAS } else { leap = false; } } else { leap = true; // ANY DE TRASPAS } }
-     * else { leap = false; }
-     *
-     * // CHECK DATA CORRECTA
-     *
-     * if (month == 2) { if (date <= 28) { return true; } else { if (date == 29) {
-     * if (leap == true) { return true; } else { return false; } } } } else { if
-     * (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month
-     * == 10 || month == 12) { if (date <= 30) { return true; } else { return false;
-     * } } else { if (month > 12) { return false; } else { if (date <= 31) { return
-     * true; } else { return false; } } } } return false; }
-     */
-
     /**
-     * @param competicion (Competicion) Estructura de datos de la competicions
+     * @param competicion (Competicion) Estructura de datos de la competicion
      * @param name        (String) Nombre con el que se ha logeado el usuario para
-     *                    la competición
+     *                    la competiciónks
      * @param rapper      (ArrayList<Rapper>) Conjunto de raperos
-     * @throws IOException
      */
     private void Dashboard(Competicion competicion, String name, ArrayList<Rapper> rapper) throws IOException {
 
         Random random = new Random();
         int opcio2;
-        int score;
+        double score;
         int contrincant;
         String type, consultantHtml;
         ArrayList<Theme> themList = new ArrayList<>();
@@ -375,7 +321,7 @@ public class MenuController {
             if (!competicion.isFinish()) {
                 System.out.println("---------------------------------------------------------------------------------");
                 System.out.println("| " + competicion.getName() + " | Phase " + competicion.getStatus() + "/"
-                        + competicion.getPhasesCount() + " | Score: " + score + " | Next battle: " + type + " vs "
+                        + competicion.getPhasesCount() + " | Score: " + (int) score + " | Next battle: " + type + " vs "
                         + rapper.get(contrincant).getStageName() + " |");
                 System.out.println("---------------------------------------------------------------------------------");
 
@@ -416,7 +362,7 @@ public class MenuController {
                 scanner.nextLine();
                 switch (opcio2) {
                     case 1:
-                        if (competicion.isFinish() == true) {
+                        if (competicion.isFinish()) {
                             System.out.println();
                             System.out.println("Competition ended. You can't battle anyone else!");
                         } else {
@@ -427,7 +373,7 @@ public class MenuController {
                                 Rapper.ordenaRappers(rapper);
                                 competicion.setStatus(2);
                                 Competicion.eliminarRaperos(rapper, competicion.getPhasesCount(),
-                                        competicion.getStatus());
+                                        competicion.getStatus(), name, competicion);
                             } else {
                                 if (competicion.getPhasesCount() == 3 && competicion.getStatus() == 2) {
                                     // Tenemos 3 fases
@@ -437,17 +383,11 @@ public class MenuController {
                                     Rapper.ordenaRappers(rapper);
                                     competicion.setStatus(3);
                                     Competicion.eliminarRaperos(rapper, competicion.getPhasesCount(),
-                                            competicion.getStatus());
+                                            competicion.getStatus(), name, competicion);
                                 } else {
-                                    if (competicion.getPhasesCount() == 3 && competicion.getStatus() == 3) {
-                                        // Final de la 3 fase
-                                        competicion.batallaInicial(rapper, themList, type, contrincant, name);
-                                        competicion.setFinish(true);
-                                    } else {
-                                        // Final de la 2 fase
-                                        competicion.batallaInicial(rapper, themList, type, contrincant, name);
-                                        competicion.setFinish(true);
-                                    }
+                                    // Fase final
+                                    competicion.batallaInicial(rapper, themList, type, contrincant, name);
+                                    competicion.setFinish(true);
                                     Rapper.ordenaRappers(rapper);
                                     rapper.get(0).setWinner(true);
                                 }
@@ -457,7 +397,7 @@ public class MenuController {
                         break;
                     case 2:
                         // Show ranking
-                        Rapper.mostrarRanking(rapper);
+                        Rapper.mostrarRanking(rapper, name);
                         break;
                     case 3:
                         // Create Profile
@@ -485,7 +425,7 @@ public class MenuController {
                         System.out.println("ERROR: Option incorrect");
                         break;
                 }
-            } catch (InputMismatchException e) {
+            } catch (InputMismatchException | InterruptedException e) {
                 System.out.println("ERROR: Option incorrect");
                 scanner.nextLine();
             }

@@ -25,35 +25,35 @@ public class Score {
     }
 
     /**
-     * @param rhymes (int) Número de rimas válidas
-     * @return (int) Cálculo matemático segun el tipo "sangre"
+     * @param rhymes (int) Numero de rimas validas
+     * @return (int) Calculo matematico segun el tipo "sangre"
      */
-    private int scoreSangre(int rhymes) {
-        return (int) (Math.PI * Math.pow(rhymes, 2)) / 4;
+    private double scoreSangre(int rhymes) {
+        return ((Math.PI * Math.pow(rhymes, 2)) / 4);
     }
 
     /**
-     * @param rhymes (int) Número de rimas válidas
-     * @return (int) Cálculo matemático segun el tipo "Acapella"
+     * @param rhymes (int) Numero de rimas validas
+     * @return (int) Calculo matematico segun el tipo "Acapella"
      */
-    private int scoreAcapella(int rhymes) {
-        return (int) (6 * Math.sqrt(rhymes) + 3) / 2;
+    private double scoreAcapella(int rhymes) {
+        return ((6 * Math.sqrt(rhymes) + 3) / 2);
     }
 
     /**
-     * @param rhymes (int) Número de rimas válidas
-     * @return (int) Cálculo matemático segun el tipo "Escrita"
+     * @param rhymes (int) Numero de rimas validas
+     * @return (int) Calculo matemático segun el tipo "Escrita"
      */
-    private int scoreEscrita(int rhymes) {
-        return 1 + 3 * rhymes;
+    private double scoreEscrita(int rhymes) {
+        return (1 + (3 * rhymes));
     }
 
     /**
      * @param rima (String) Rima para analizar
-     * @param type (String) Tipo de rima para calcular su puntuación
-     * @return (int) Puntuación a esa rima segun el tipo de batalla
+     * @param type (String) Tipo de rima para calcular su puntuacion
+     * @return (int) Puntuacion a esa rima segun el tipo de batalla
      */
-    public int countRhymes(String rima, String type) {
+    public double countRhymes(String rima, String type) {
         int count;
         String paragref = "12";
         StringBuilder myString = new StringBuilder(paragref);
@@ -102,8 +102,7 @@ public class Score {
         return switch (type) {
             case "Sangre" -> scoreSangre(count);
             case "Acapella" -> scoreAcapella(count);
-            case "Escria" -> scoreEscrita(count);
-            default -> count;
+            default -> scoreEscrita(count);
         };
     }
 

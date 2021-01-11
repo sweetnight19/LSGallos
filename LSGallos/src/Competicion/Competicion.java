@@ -17,7 +17,7 @@ public class Competicion {
     private ArrayList<phases> phases;
     private int status;
     private boolean finish;
-    private ArrayList<Threads> threads = new ArrayList<>();
+    private final ArrayList<Threads> threads = new ArrayList<>();
 
     public Competicion() {
         status = 1;
@@ -39,42 +39,42 @@ public class Competicion {
     }
 
     /**
-     * @return (String) Devuelve el nombre de la competición
+     * @return (String) Devuelve el nombre de la competicion
      */
     public String getName() {
         return name;
     }
 
     /**
-     * @return (int) Devuelve el estado actual de la competición
+     * @return (int) Devuelve el estado actual de la competicion
      */
     public int getStatus() {
         return status;
     }
 
     /**
-     * @param status (int) Indicar a la competición, en que estado estamos
+     * @param status (int) Indicar a la competicion, en que estado estamos
      */
     public void setStatus(int status) {
         this.status = status;
     }
 
     /**
-     * @return (String) Devuelve la fecha de inicio de la competición
+     * @return (String) Devuelve la fecha de inicio de la competicion
      */
     public String getStartDate() {
         return startDate;
     }
 
     /**
-     * @return (String) Devuelve la fecha de finalización de la competición
+     * @return (String) Devuelve la fecha de finalizacion de la competicion
      */
     public String getEndDate() {
         return endDate;
     }
 
     /**
-     * @return (int) Devuelve el número de fases de la competición
+     * @return (int) Devuelve el numero de fases de la competicion
      */
     public int getPhasesCount() {
         return phases.size();
@@ -87,12 +87,13 @@ public class Competicion {
      * @param contrincant (int) indicador de quien es el rival dentro del conjunto
      *                    de raperos
      * @param name        (String) Nombre del ususario con el que se ha logeado a la
-     *                    competición
+     *                    competicion
      */
     public void batallaInicial(ArrayList<Rapper> rapper, ArrayList<Theme> themList, String type, int contrincant,
-            String name) {
+                               String name) {
         Random random = new Random();
-        int primer, topic, puntuacio1, puntuacio2;
+        int primer, topic;
+        double puntuacio1, puntuacio2;
         String rima;
         Scanner scanner = new Scanner(System.in);
         Score score = new Score();
@@ -112,7 +113,6 @@ public class Competicion {
             System.out.println("\nYour turn!\nEnter your verse: ");
             rima = scanner.nextLine();
             puntuacio1 += score.countRhymes(rima, type);
-
             // 2
             System.out.println();
             System.out.println(rapper.get(contrincant).getStageName() + " :");
@@ -172,7 +172,6 @@ public class Competicion {
             }
 
             // 4
-            System.out.println();
             System.out.println("Your turn!\nEnter your verse: ");
             rima = scanner.nextLine();
             puntuacio1 += score.countRhymes(rima, type);
@@ -187,13 +186,12 @@ public class Competicion {
                 flag = 1;
             }
         }
-        System.out.println();
     }
 
     /**
      * @param rapper     (ArrayList<Rapper>) Conjunto de raperos
      * @param name       (String) Nombre del ususario con el que se ha logeado a la
-     *                   competición
+     *                   competicion
      * @param contricant (int) Indicador de quien es el rival dentro del conjunto de
      *                   raperos
      * @param themList   (ArrayList<Theme>) Conjunto de rimas
@@ -229,34 +227,40 @@ public class Competicion {
         // Asignamos el emparejamiento
         players[usuario] = contricant;
         players[contricant] = usuario;
+        System.out.println();
+
         for (int i = 0; i < players.length; i++) {
             do {
                 aux = random.nextInt(players.length);
-                if (players[i] == -1 && aux != i) {
+                if (players[i] == -1 && players[aux] == -1 && i != usuario && i != contricant) {
                     players[i] = aux;
                     players[aux] = i;
                 }
-            } while (aux == i);
-
+            } while (players[i] == -1);
         }
 
         // Lanzamos los threadas
         for (int i = 0; i < players.length / 2; i++) {
-            threads.add(new Threads(rapper.get(i), rapper.get(players[players[i]]), themList, type));
-            threads.get(i).run();
+            if (i != usuario && i != contricant) {
+                threads.add(new Threads(rapper.get(i), rapper.get(players[i]), themList, type));
+                threads.get(threads.size() - 1).run();
+            }
+
         }
+
     }
 
     /**
      * @param rapper (ArrayList<Rapper>) Conjunto de raperos
-     * @return (ArrayList<Rapper>) Devuelve el conjunto de raperos despues de sus
-     *         batallas respectivas
+     * @return (ArrayList < Rapper >) Devuelve el conjunto de raperos despues de sus
+     * batallas respectivas
      */
-    public ArrayList<Rapper> getResult(ArrayList<Rapper> rapper) {
+    public ArrayList<Rapper> getResult(ArrayList<Rapper> rapper) throws InterruptedException {
         Rapper rapero1, rapero2;
-        for (Threads thread : threads) {
-            rapero1 = thread.getRapero1();
-            rapero2 = thread.getRapero2();
+        for (int i = 0; i < threads.size(); i++) {
+            threads.get(i).join();
+            rapero1 = threads.get(i).getRapero1();
+            rapero2 = threads.get(i).getRapero2();
             for (int j = 0, flag = 0; j < rapper.size() && flag == 0; j++) {
                 if (rapper.get(j).getStageName().equals(rapero1.getStageName())) {
                     rapper.remove(j);
@@ -272,24 +276,34 @@ public class Competicion {
                 }
             }
         }
+        System.out.println();
         return rapper;
     }
 
     /**
      * @param rapper      (ArrayList<Rapper>) Conjunto de raperos
-     * @param countPhases (int) Número de fases que tiene la competición
-     * @param status      (int) fase actual de la competición
+     * @param countPhases (int) Numero de fases que tiene la competicion
+     * @param status      (int) fase actual de la competicion
      */
-    public static void eliminarRaperos(ArrayList<Rapper> rapper, int countPhases, int status) {
+    public static void eliminarRaperos(ArrayList<Rapper> rapper, int countPhases, int status, String name,
+                                       Competicion competicion) {
         // Ultima fase
         if ((countPhases == 2 && status == 2) || (countPhases == 3 && status == 3)) {
             for (int i = rapper.size() - 1; rapper.size() > 2; i--) {
+                if (rapper.get(i).getStageName().equals(name)) {
+                    competicion.setFinish(true);
+                    rapper.get(0).setWinner(true);
+                }
                 rapper.remove(i);
             }
 
         } else {
             // Penultima fase
             for (int i = rapper.size() - 1, count = rapper.size() / 2; rapper.size() > count; i--) {
+                if (rapper.get(i).getStageName().equals(name)) {
+                    competicion.setFinish(true);
+                    rapper.get(0).setWinner(true);
+                }
                 rapper.remove(i);
             }
 
